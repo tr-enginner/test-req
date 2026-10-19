@@ -1,0 +1,44 @@
+{
+  "type": "module",
+  "name": "@matrix/api",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/multipart": "^9.2.1",
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-fastify": "^11.1.6",
+    "@opencode-ai/sdk": "^1.18.18",
+    "@prisma/client": "^6.14.0",
+    "@types/archiver": "^8.0.0",
+    "archiver": "^8.0.0",
+    "argon2": "^0.44.0",
+    "bullmq": "^5.58.0",
+    "chokidar": "^4.0.3",
+    "docxtemplater": "^3.69.3",
+    "iconv-lite": "^0.7.3",
+    "ioredis": "^5.7.0",
+    "jose": "^6.0.12",
+    "jsonc-parser": "^3.3.1",
+    "pizzip": "^3.2.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "unzipper": "^0.12.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.17.2",
+    "@types/unzipper": "^0.10.11",
+    "prisma": "^6.14.0",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,295 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  REVIEWER
+  VIEWER
+}
+enum ProjectStatus {
+  IMPORTING
+  PENDING_GENERATION
+  INCOMPLETE_MATRIX
+  GENERATING
+  REBUILDING
+  READY_FOR_REVIEW
+  FAILED
+}
+enum RunStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model User {
+  id String @id @default(cuid())
+  username String @unique
+  passwordHash String
+  role Role @default(REVIEWER)
+  reviews Review[]
+  phase2EditRuns Phase2EditRun[]
+  editTimeSegments EditTimeSegment[]
+  requirementRevisions RequirementRevision[]
+  createdAt DateTime @default(now())
+}
+model Project {
+  id String @id @default(cuid())
+  name String @unique
+  status ProjectStatus @default(IMPORTING)
+  workspacePath String @unique
+  missingArtifacts Json?
+  documents Document[]
+  testRequirementNodes TestRequirementNode[]
+  traceLinks TraceLink[]
+  runs Phase2Run[]
+  editRuns Phase2EditRun[]
+  reviews Review[]
+  editTimeSegments EditTimeSegment[]
+  requirementRevisions RequirementRevision[]
+  requirementChangeSets RequirementChangeSet[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Phase2EditRun {
+  id String @id @default(cuid())
+  projectId String
+  userId String
+  targetBusinessId String?
+  operation String
+  status RunStatus @default(QUEUED)
+  currentStage String?
+  progress Int @default(0)
+  expectedRevision String
+  savedRevision String?
+  backupPath String?
+  warnings Json?
+  skippedCount Int @default(0)
+  draftStatus String @default("NONE")
+  errorMessage String?
+  request Json
+  applyResult Json?
+  startedAt DateTime?
+  savedAt DateTime?
+  publishedAt DateTime?
+  stageTimings Json?
+  finishedAt DateTime?
+  createdAt DateTime @default(now())
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  user User @relation(fields:[userId], references:[id])
+  revision RequirementRevision?
+  @@index([projectId,status])
+}
+model Document {
+  id String @id @default(cuid())
+  projectId String
+  name String
+  objectKey String
+  outline Json?
+  fileHash String?
+  parseStatus String @default("PENDING")
+  parseError String?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  nodes DocumentNode[]
+}
+model DocumentNode {
+  id String @id @default(cuid())
+  documentId String
+  sourceRef String
+  nodeType String @default("heading")
+  number String?
+  title String
+  text String?
+  level Int
+  parentId String?
+  orderIndex Int
+  paragraphIndex Int?
+  paraId String?
+  textHash String?
+  headingPath Json?
+  document Document @relation(fields:[documentId], references:[id], onDelete:Cascade)
+  parent DocumentNode? @relation("DocumentNodeTree", fields:[parentId], references:[id], onDelete:SetNull)
+  children DocumentNode[] @relation("DocumentNodeTree")
+  outgoingLinks TraceLink[]
+  @@unique([documentId,sourceRef])
+  @@index([documentId,parentId,orderIndex])
+}
+model TestRequirementNode {
+  id String @id @default(cuid())
+  projectId String
+  businessId String
+  entityUid String
+  nodeType String
+  number String?
+  title String
+  level Int
+  parentId String?
+  orderIndex Int
+  artifact String
+  content Json?
+  sourceRefs Json?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  parent TestRequirementNode? @relation("TestRequirementTree", fields:[parentId], references:[id], onDelete:SetNull)
+  children TestRequirementNode[] @relation("TestRequirementTree")
+  incomingLinks TraceLink[]
+  @@unique([projectId,businessId])
+  @@index([projectId,entityUid])
+  @@index([projectId,parentId,orderIndex])
+}
+model TraceLink {
+  id String @id @default(cuid())
+  projectId String
+  sourceNodeId String
+  targetNodeId String
+  relationType String @default("generated")
+  source String @default("phase2-test-traceability.json")
+  confidence Float?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  sourceNode DocumentNode @relation(fields:[sourceNodeId], references:[id], onDelete:Cascade)
+  targetNode TestRequirementNode @relation(fields:[targetNodeId], references:[id], onDelete:Cascade)
+  @@unique([sourceNodeId,targetNodeId])
+  @@index([projectId,sourceNodeId])
+  @@index([projectId,targetNodeId])
+}
+model Phase2Run {
+  id String @id @default(cuid())
+  projectId String
+  status RunStatus @default(QUEUED)
+  opencodeSessionId String?
+  currentStage String?
+  progress Int @default(0)
+  completedStages Json?
+  errorMessage String?
+  startedAt DateTime?
+  finishedAt DateTime?
+  autoRetry Boolean @default(true)
+  attemptCount Int @default(0)
+  accumulatedElapsedMs BigInt @default(0)
+  attemptStartedAt DateTime?
+  tokenUsage Json?
+  usageUpdatedAt DateTime?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  events RunEvent[]
+  @@index([projectId,status])
+}
+model RunEvent {
+  id BigInt @id @default(autoincrement())
+  runId String
+  type String
+  payload Json
+  createdAt DateTime @default(now())
+  run Phase2Run @relation(fields:[runId], references:[id], onDelete:Cascade)
+  @@index([runId,id])
+}
+model Review {
+  id String @id @default(cuid())
+  projectId String
+  reviewerId String
+  nodeId String
+  entityUid String?
+  revisionId String?
+  invalidatedAt DateTime?
+  invalidatedByRevisionId String?
+  version Int @default(1)
+  scores Json
+  weightedScore Float
+  grade String
+  issues Json?
+  comment String?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  reviewer User @relation(fields:[reviewerId], references:[id])
+  revision RequirementRevision? @relation(fields:[revisionId], references:[id], onDelete:SetNull)
+  createdAt DateTime @default(now())
+  @@unique([projectId,nodeId,version])
+}
+
+enum RequirementRevisionKind {
+  GENERATED_BASELINE
+  MIGRATED_BASELINE
+  PUBLISHED
+}
+
+enum RequirementRevisionStatus {
+  BUILDING
+  PUBLISHED
+  FAILED
+  CORRUPTED
+}
+
+model RequirementRevision {
+  id String @id
+  projectId String
+  sequence Int
+  versionLabel String
+  versionName String?
+  kind RequirementRevisionKind
+  status RequirementRevisionStatus @default(BUILDING)
+  parentRevisionId String?
+  baselineRevisionId String?
+  editRunId String? @unique
+  storagePath String
+  manifestHash String
+  sourceRevision String?
+  resultRevision String?
+  changeSummary Json?
+  createdById String?
+  createdAt DateTime @default(now())
+  publishedAt DateTime?
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  createdBy User? @relation(fields:[createdById], references:[id], onDelete:SetNull)
+  editRun Phase2EditRun? @relation(fields:[editRunId], references:[id], onDelete:SetNull)
+  parentRevision RequirementRevision? @relation("RevisionParents", fields:[parentRevisionId], references:[id], onDelete:SetNull)
+  children RequirementRevision[] @relation("RevisionParents")
+  baselineRevision RequirementRevision? @relation("RevisionBaselines", fields:[baselineRevisionId], references:[id], onDelete:SetNull)
+  baselineChildren RequirementRevision[] @relation("RevisionBaselines")
+  reviews Review[]
+  fromChangeSets RequirementChangeSet[] @relation("ChangeSetFrom")
+  toChangeSets RequirementChangeSet[] @relation("ChangeSetTo")
+  @@unique([projectId,sequence])
+  @@index([projectId,status])
+}
+
+model RequirementChangeSet {
+  id String @id
+  projectId String
+  fromRevisionId String
+  toRevisionId String
+  algorithmVersion String
+  status String @default("READY")
+  summary Json
+  changes Json
+  warnings Json?
+  createdAt DateTime @default(now())
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  fromRevision RequirementRevision @relation("ChangeSetFrom", fields:[fromRevisionId], references:[id], onDelete:Cascade)
+  toRevision RequirementRevision @relation("ChangeSetTo", fields:[toRevisionId], references:[id], onDelete:Cascade)
+  @@unique([fromRevisionId,toRevisionId,algorithmVersion])
+  @@index([projectId,createdAt])
+}
+model EditTimeSegment {
+  id String @id
+  projectId String
+  userId String
+  startedAt DateTime
+  durationMs Int
+  createdAt DateTime @default(now())
+  project Project @relation(fields:[projectId], references:[id], onDelete:Cascade)
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([projectId,createdAt])
+  @@index([projectId,userId])
+}
+model AuditLog {
+  id BigInt @id @default(autoincrement())
+  userId String?
+  action String
+  resourceType String
+  resourceId String?
+  detail Json?
+  createdAt DateTime @default(now())
+}

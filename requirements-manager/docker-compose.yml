@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: matrix
+      POSTGRES_PASSWORD: matrix
+      POSTGRES_DB: matrix_requirements
+    volumes: [ postgres-data:/var/lib/postgresql/data ]
+    healthcheck: { test: [ "CMD-SHELL", "pg_isready -U matrix -d matrix_requirements" ], interval: 5s, timeout: 3s, retries: 20 }
+    ports: [ "5432:5432" ]
+  redis:
+    image: redis:7-alpine
+    volumes: [ redis-data:/data ]
+  minio:
+    image: ghcr.io/coollabsio/minio:RELEASE.2025-10-15T17-29-55Z
+    command: server /data --console-address :9001
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-matrix}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-change-me}
+    volumes: [ minio-data:/data ]
+    ports: [ "9001:9001" ]
+  opencode:
+    build:
+      context: ..
+      dockerfile: requirements-manager/docker/opencode.Dockerfile
+    command: [ "opencode", "serve", "--hostname", "0.0.0.0", "--port", "4096", "--print-logs", "--log-level", "INFO" ]
+    environment:
+      OPENCODE_SERVER_USERNAME: ${OPENCODE_USERNAME:-opencode}
+      OPENCODE_SERVER_PASSWORD: ${OPENCODE_PASSWORD:-opencode}
+      PROJECTS_ROOT: /data/projects
+      MATRIX_PHASE2_RUNNER_PORT: "4097"
+    env_file: ${ENV_FILE:-.env}
+    volumes:
+      - projects:/data/projects
+      - opencode-config:/root/.config/opencode
+    healthcheck:
+      test: [ "CMD", "node", "/usr/local/bin/opencode-healthcheck.mjs" ]
+      interval: 5s
+      timeout: 6s
+      retries: 30
+      start_period: 10s
+  api:
+    build: { context: ., dockerfile: docker/app.Dockerfile, target: api }
+    env_file: ${ENV_FILE:-.env}
+    depends_on:
+      opencode:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    ports: [ "3000:3000" ]
+    volumes:
+      - projects:/data/projects
+      - opencode-config:/opencode-config
+    environment:
+      MATRIX_PHASE2_RUNNER_URL: http://opencode:4097
+  worker:
+    build: { context: ., dockerfile: docker/app.Dockerfile, target: worker }
+    env_file: ${ENV_FILE:-.env}
+    depends_on:
+      opencode:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    environment:
+      OPENCODE_CONFIG_PATH: /opencode-config/opencode.json
+      MATRIX_PHASE2_RUNNER_URL: http://opencode:4097
+    volumes:
+      - projects:/data/projects
+      - opencode-config:/opencode-config:ro
+  web:
+    build: { context: ., dockerfile: docker/app.Dockerfile, target: web }
+    depends_on:
+      api:
+        condition: service_started
+    ports: [ "8080:80" ]
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  projects:
+  opencode-config:

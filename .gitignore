@@ -72,5 +72,3 @@ scripts/run-worker-batch.ts
 # Template lock file
 templates/.~-template.docx
 
-# requirement-manager
-requirements-manager

@@ -1,0 +1,130 @@
+name: requirements-manager
+
+services:
+  postgres:
+    image: requirements-manager-postgres:arm64
+    pull_policy: never
+    environment:
+      POSTGRES_USER: matrix
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?请在.env中设置POSTGRES_PASSWORD}
+      POSTGRES_DB: matrix_requirements
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U matrix -d matrix_requirements"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  redis:
+    image: requirements-manager-redis:arm64
+    pull_policy: never
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  minio:
+    image: requirements-manager-minio:arm64
+    pull_policy: never
+    command: server /data --console-address :9001
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:?请在.env中设置MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:?请在.env中设置MINIO_SECRET_KEY}
+    volumes:
+      - ./data/minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  opencode:
+    image: requirements-manager-opencode:arm64
+    pull_policy: never
+    command: ["opencode", "serve", "--hostname", "0.0.0.0", "--port", "4096", "--print-logs", "--log-level", "INFO"]
+    environment:
+      OPENCODE_SERVER_USERNAME: ${OPENCODE_USERNAME:?请在.env中设置OPENCODE_USERNAME}
+      OPENCODE_SERVER_PASSWORD: ${OPENCODE_PASSWORD:?请在.env中设置OPENCODE_PASSWORD}
+      PROJECTS_ROOT: /data/projects
+      MATRIX_PHASE2_RUNNER_PORT: "4097"
+    env_file: .env
+    volumes:
+      - ./data/projects:/data/projects
+      - ./data/opencode-config:/root/.config/opencode
+    healthcheck:
+      test: ["CMD", "node", "/usr/local/bin/opencode-healthcheck.mjs"]
+      interval: 5s
+      timeout: 6s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    image: requirements-manager-api:arm64
+    pull_policy: never
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://matrix:${POSTGRES_PASSWORD}@postgres:5432/matrix_requirements
+      REDIS_URL: redis://redis:6379
+      MINIO_ENDPOINT: http://minio:9000
+      OPENCODE_URL: http://opencode:4096
+      MATRIX_PHASE2_RUNNER_URL: http://opencode:4097
+      PROJECTS_ROOT: /data/projects
+      WEB_ORIGIN: ${WEB_ORIGIN:?请在.env中设置WEB_ORIGIN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      opencode:
+        condition: service_healthy
+    volumes:
+      - ./data/projects:/data/projects
+      - ./data/opencode-config:/opencode-config
+    restart: unless-stopped
+
+  worker:
+    image: requirements-manager-worker:arm64
+    pull_policy: never
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://matrix:${POSTGRES_PASSWORD}@postgres:5432/matrix_requirements
+      REDIS_URL: redis://redis:6379
+      MINIO_ENDPOINT: http://minio:9000
+      OPENCODE_URL: http://opencode:4096
+      PROJECTS_ROOT: /data/projects
+      OPENCODE_CONFIG_PATH: /opencode-config/opencode.json
+      MATRIX_PHASE2_RUNNER_URL: http://opencode:4097
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      opencode:
+        condition: service_healthy
+    volumes:
+      - ./data/projects:/data/projects
+      - ./data/opencode-config:/opencode-config:ro
+    restart: unless-stopped
+
+  web:
+    image: requirements-manager-web:arm64
+    pull_policy: never
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "8089:80"
+    restart: unless-stopped

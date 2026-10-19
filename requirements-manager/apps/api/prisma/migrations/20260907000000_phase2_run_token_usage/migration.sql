@@ -1,0 +1,3 @@
+ALTER TABLE "Phase2Run"
+ADD COLUMN "tokenUsage" JSONB,
+ADD COLUMN "usageUpdatedAt" TIMESTAMP(3);
