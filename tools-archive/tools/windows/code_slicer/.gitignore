@@ -1,0 +1,10 @@
+work/build/
+work/dist/
+work/validation_scratch/
+work/*.db
+work/*.spec
+work/app/__pycache__/
+work/scripts/__pycache__/
+*.pyc
+.idea
+.venv

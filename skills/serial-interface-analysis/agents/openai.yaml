@@ -1,0 +1,4 @@
+interface:
+  display_name: "串口接口领域分析"
+  short_description: "为通用硬件接口模型补充串口检索与组织经验。"
+  default_prompt: "使用 $serial-interface-analysis，并同时遵循 $hardware-interface-modeling 和 $hardware-interface-dataflow-constraints，为当前串口候选补充领域证据。"

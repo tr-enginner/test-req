@@ -1,0 +1,4 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["file://C:/claude/matrix-embedded-agent/dist/index.js"]
+}

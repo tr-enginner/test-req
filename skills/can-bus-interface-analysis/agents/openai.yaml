@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAN总线接口领域分析"
+  short_description: "为通用硬件接口模型补充CAN总述、数据流和表格归类经验。"
+  default_prompt: "使用 $can-bus-interface-analysis，并同时遵循 $hardware-interface-modeling 和 $hardware-interface-dataflow-constraints，为当前CAN候选补充领域证据。"

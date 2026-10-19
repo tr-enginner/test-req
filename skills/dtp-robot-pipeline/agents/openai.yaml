@@ -1,0 +1,4 @@
+interface:
+  display_name: "DTP Robot Pipeline"
+  short_description: "Orchestrate project data, case data, and Robot generation stages."
+  default_prompt: "Use $dtp-robot-pipeline to inspect .matrix/data readiness, run only the missing DTP stages, and generate Robot scripts under DTPProject/V1/测试用例."

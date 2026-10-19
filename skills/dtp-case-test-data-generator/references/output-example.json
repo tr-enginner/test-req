@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.1.0",
+  "project_name": "demo-project",
+  "source_files": {
+    "todo_file": ".matrix/data/test-cases-todo.txt",
+    "confirmation_tests_file": ".matrix/data/confirmation-tests.json",
+    "keyword_dir": ".matrix/data/DTPProject/combined-keywords",
+    "generated_data_files_index": ".matrix/data/dtp-generation/generated-data-files-index.json",
+    "generated_test_data_file": ".matrix/data/dtp-generation/generated-test-data.json",
+    "diagnostics_index": ".matrix/data/dtp-generation/generated-test-data-diagnostics.json",
+    "case_checkpoint_dir": ".matrix/data/dtp-generation/cases",
+    "case_diagnostics_dir": ".matrix/data/dtp-generation/diagnostics",
+    "project_root": "."
+  },
+  "diagnostics": {
+    "index_file": ".matrix/data/dtp-generation/generated-test-data-diagnostics.json",
+    "case_checkpoint_dir": ".matrix/data/dtp-generation/cases",
+    "case_diagnostics_dir": ".matrix/data/dtp-generation/diagnostics"
+  },
+  "cases": [
+    {
+      "case_id": "TC-GN-001",
+      "translate_status": "success",
+      "case_name": "Telemetry polling",
+      "test_purpose": "Verify telemetry polling",
+      "test_environment": "软平台测试环境",
+      "generated_steps": [
+        {
+          "step_index": 1,
+          "keyword_name": "SendCANDataFile",
+          "step_description": "Send the correct telemetry polling frame",
+          "resolved_arguments": [
+            {
+              "name": "${time}",
+              "value": 1.1,
+              "semantic": "time"
+            },
+            {
+              "name": "${para2}",
+              "value": "input-data\\case-generated\\TC-GN-001\\S01-telemetry-correct.txt",
+              "semantic": "file_path"
+            }
+          ],
+          "generated_data_files": [
+            {
+              "argument_name": "${para2}",
+              "content_generation_required": true,
+              "requested_file_name": "S01-telemetry-correct.txt",
+              "file_path": "input-data\\case-generated\\TC-GN-001\\S01-telemetry-correct.txt",
+              "flow_direction": "input",
+              "variant_type": "correct"
+            }
+          ],
+          "warnings": []
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "warnings": []
+}

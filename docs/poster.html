@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: 'Jura'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/Jura-Light.ttf'); font-weight: 300; }
+  @font-face { font-family: 'Jura'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/Jura-Medium.ttf'); font-weight: 500; }
+  @font-face { font-family: 'ISans'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/InstrumentSans-Regular.ttf'); font-weight: 400; }
+  @font-face { font-family: 'ISans'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/InstrumentSans-Bold.ttf'); font-weight: 700; }
+  @font-face { font-family: 'Mono'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/IBMPlexMono-Regular.ttf'); font-weight: 400; }
+  @font-face { font-family: 'Mono'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/IBMPlexMono-Bold.ttf'); font-weight: 700; }
+  @font-face { font-family: 'DM'; src: url('file:///C:/Users/12333/.claude/skills/canvas-design/canvas-fonts/DMMono-Regular.ttf'); font-weight: 400; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1920px; height: 1080px;
+    background: #FAFBFC; overflow: hidden;
+    position: relative;
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+  }
+
+  /* Grid */
+  .grid-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.014) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.014) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  /* Bars */
+  .top-bar { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #2563EB 0%, #3B82F6 40%, #93C5FD 75%, #DBEAFE 100%); }
+  .btm-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #DBEAFE 0%, #93C5FD 30%, #3B82F6 65%, #2563EB 100%); }
+  /* Corners */
+  .cr { position: absolute; width: 22px; height: 22px; border-color: #D6DCE5; border-style: solid; border-width: 0; }
+  .cr.tl { top: 22px; left: 22px; border-top-width: 1px; border-left-width: 1px; }
+  .cr.tr { top: 22px; right: 22px; border-top-width: 1px; border-right-width: 1px; }
+  .cr.bl { bottom: 22px; left: 22px; border-bottom-width: 1px; border-left-width: 1px; }
+  .cr.br { bottom: 22px; right: 22px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* ═══════ HERO ═══════ */
+  .hero {
+    position: absolute; top: 36px; left: 72px; right: 72px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1.5px solid #E2E8F0;
+  }
+  .hero-left { display: flex; align-items: baseline; gap: 24px; }
+  .hero-mark {
+    font-family: 'Mono', monospace; font-size: 13px;
+    letter-spacing: 4px; text-transform: uppercase; color: #94A3B8;
+    margin-bottom: 6px;
+  }
+  .hero-title {
+    font-family: 'Jura', sans-serif; font-weight: 300;
+    font-size: 72px; letter-spacing: -2px; color: #0F172A; line-height: 1;
+  }
+  .hero-title b { font-weight: 500; color: #2563EB; }
+  .hero-sub {
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+    font-size: 28px; font-weight: 400; color: #475569;
+    letter-spacing: 1px; margin-left: 4px; padding-bottom: 8px;
+  }
+  .hero-right { display: flex; align-items: center; gap: 28px; padding-bottom: 8px; }
+  .cmd-box {
+    display: flex; align-items: center; gap: 10px;
+    background: #F1F5F9; border: 1.5px solid #E2E8F0;
+    border-radius: 10px; padding: 12px 24px;
+  }
+  .cmd-dot { width: 11px; height: 11px; border-radius: 50%; background: #22C55E; }
+  .cmd-text { font-family: 'Mono', monospace; font-size: 22px; font-weight: 700; color: #334155; letter-spacing: 0.5px; }
+
+  /* ═══════ METRICS STRIP ═══════ */
+  .metrics {
+    position: absolute; top: 148px; left: 72px; right: 72px;
+    display: flex; gap: 0;
+  }
+  .m {
+    flex: 1; display: flex; align-items: baseline; gap: 14px;
+    padding: 22px 0; position: relative;
+    justify-content: center;
+  }
+  .m:not(:last-child)::after {
+    content: ''; position: absolute; right: 0; top: 18px; bottom: 18px;
+    width: 1px; background: #E2E8F0;
+  }
+  .m-num {
+    font-family: 'Jura', sans-serif; font-weight: 500;
+    font-size: 64px; color: #0F172A; line-height: 1;
+  }
+  .m-num.ac { color: #2563EB; }
+  .m-lbl {
+    font-family: 'ISans', sans-serif; font-size: 18px;
+    color: #94A3B8; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* ═══════ PIPELINE ═══════ */
+  .pipe-wrap {
+    position: absolute; top: 250px; left: 72px; right: 72px;
+    display: flex; align-items: center; gap: 0;
+    padding: 20px 0 28px;
+  }
+  .pipe-wrap::before {
+    content: ''; position: absolute;
+    top: calc(20px + 28px); left: 28px; right: 28px;
+    height: 2.5px; background: #E2E8F0; z-index: 0;
+  }
+  .ph {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 10px; position: relative; z-index: 1;
+  }
+  .ph-c {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2.5px solid #CBD5E1;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Mono', monospace; font-size: 18px; font-weight: 700;
+    color: #64748B; background: #FAFBFC;
+  }
+  .ph.g .ph-c {
+    border-color: #2563EB; color: #2563EB; background: #EFF6FF;
+    box-shadow: 0 0 0 6px rgba(37,99,235,0.07);
+  }
+  .ph-n {
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+    font-size: 16px; font-weight: 700; color: #475569;
+    text-align: center; letter-spacing: 0.3px; line-height: 1.2;
+  }
+  .g-tag {
+    position: absolute; top: -16px;
+    font-family: 'Mono', monospace; font-size: 11px; font-weight: 700;
+    color: #2563EB; letter-spacing: 2px;
+  }
+
+  /* ═══════ FEATURE CARDS (5 across) ═══════ */
+  /* Two explicit rows */
+  .row1 {
+    position: absolute; top: 378px; left: 72px; right: 72px;
+    display: flex; gap: 18px;
+  }
+  .row2 {
+    position: absolute; top: 650px; left: 72px; right: 72px;
+    display: flex; gap: 18px;
+    justify-content: center;
+  }
+  .row1 .fc { flex: 1 1 0; min-width: 0; }
+  .row2 .fc { width: 575px; flex: none; }
+  .fc {
+    background: #FFF; border: 1px solid #E2E8F0;
+    border-radius: 14px; padding: 26px 24px 22px;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .fc::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    border-radius: 16px 16px 0 0; background: #E2E8F0;
+  }
+  .fc.a::before { background: #2563EB; }
+  .fc.b::before { background: #3B82F6; }
+  .fc.c::before { background: #60A5FA; }
+
+  .fc-ico {
+    width: 52px; height: 52px; border-radius: 13px;
+    background: #F1F5F9;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .fc.a .fc-ico { background: #EFF6FF; }
+  .fc-ico svg { width: 26px; height: 26px; }
+
+  .fc-t {
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+    font-weight: 700; font-size: 26px;
+    color: #0F172A; margin-bottom: 12px; line-height: 1.2;
+  }
+  .fc-d {
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+    font-size: 17px; color: #64748B;
+    line-height: 1.65; letter-spacing: 0.1px;
+    flex: 1;
+  }
+  .fc-tag {
+    display: inline-block; margin-top: auto; padding-top: 12px;
+    font-family: 'Mono', monospace; font-size: 12px;
+    color: #2563EB; background: #EFF6FF;
+    padding: 5px 12px; border-radius: 6px;
+    letter-spacing: 0.3px; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* ═══════ STANDARDS BAR ═══════ */
+  .stds {
+    position: absolute; bottom: 42px; left: 72px; right: 72px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .stds-lbl {
+    font-family: 'ISans', sans-serif; font-size: 14px;
+    color: #94A3B8; letter-spacing: 2.5px; text-transform: uppercase;
+    white-space: nowrap; margin-right: 4px;
+  }
+  .stds-div { width: 1px; height: 24px; background: #E2E8F0; }
+  .stds-b {
+    font-family: 'Mono', monospace; font-size: 16px;
+    color: #475569; background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    padding: 8px 18px; border-radius: 8px;
+    letter-spacing: 0.5px; white-space: nowrap;
+  }
+  .stds-spacer { flex: 1; }
+  .stds-tagline {
+    font-family: 'ISans', 'Microsoft YaHei', sans-serif;
+    font-size: 18px; color: #64748B; letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="top-bar"></div>
+<div class="btm-bar"></div>
+<div class="cr tl"></div><div class="cr tr"></div><div class="cr bl"></div><div class="cr br"></div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div>
+    <div class="hero-mark">OpenCode Plugin</div>
+    <div class="hero-left">
+      <div class="hero-title"><b>MATRIX</b> Embedded Agent</div>
+      <div class="hero-sub">嵌入式软件测试多智能体系统</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="cmd-box">
+      <div class="cmd-dot"></div>
+      <div class="cmd-text">/matrix-start</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ METRICS ═══ -->
+<div class="metrics">
+  <div class="m"><div class="m-num ac">17</div><div class="m-lbl">Agents</div></div>
+  <div class="m"><div class="m-num">26</div><div class="m-lbl">Tools</div></div>
+  <div class="m"><div class="m-num ac">9</div><div class="m-lbl">Phases</div></div>
+  <div class="m"><div class="m-num">13</div><div class="m-lbl">Skills</div></div>
+  <div class="m"><div class="m-num">8</div><div class="m-lbl">Dialects</div></div>
+</div>
+
+<!-- ═══ PIPELINE ═══ -->
+<div class="pipe-wrap">
+  <div class="ph"><div class="ph-c">0</div><div class="ph-n">任务分类</div></div>
+  <div class="ph"><div class="ph-c">1</div><div class="ph-n">软件分析</div></div>
+  <div class="ph"><div class="ph-c">1b</div><div class="ph-n">代码知识库</div></div>
+  <div class="ph g"><div class="g-tag">GATE</div><div class="ph-c">2</div><div class="ph-n">测试需求</div></div>
+  <div class="ph g"><div class="g-tag">GATE</div><div class="ph-c">3</div><div class="ph-n">代码审查</div></div>
+  <div class="ph"><div class="ph-c">4</div><div class="ph-n">单元测试</div></div>
+  <div class="ph g"><div class="g-tag">GATE</div><div class="ph-c">5</div><div class="ph-n">测试环境</div></div>
+  <div class="ph g"><div class="g-tag">GATE</div><div class="ph-c">6</div><div class="ph-n">确认测试</div></div>
+  <div class="ph"><div class="ph-c">7</div><div class="ph-n">测试执行</div></div>
+  <div class="ph"><div class="ph-c">8</div><div class="ph-n">测试总结</div></div>
+</div>
+
+<!-- ═══ ROW 1: 3 CARDS ═══ -->
+<div class="row1">
+  <div class="fc a">
+    <div class="fc-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 7l3 3m4 0l3-3m-10 7l3-3m4 0l3 3"/></svg>
+    </div>
+    <div class="fc-t">多智能体协同</div>
+    <div class="fc-d">17 个专业智能体分工协作<br>编排 / 分析 / 测试 / 质量四大类别<br>智能路由、自动流转、失败升级</div>
+    <div class="fc-tag">conductor &rarr; analyst &rarr; inspector</div>
+  </div>
+  <div class="fc a">
+    <div class="fc-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+    </div>
+    <div class="fc-t">评审门控质量保障</div>
+    <div class="fc-d">Phase 2/3/5/6 四道质量关卡<br>PASS / REVISE 循环审查机制<br>CR-Reviewer 独立审计</div>
+    <div class="fc-tag">max 3 cycles &rarr; oracle escalation</div>
+  </div>
+  <div class="fc b">
+    <div class="fc-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    </div>
+    <div class="fc-t">嵌入式编译适配</div>
+    <div class="fc-d">8 种编译器方言自动检测<br>GCC / ARMCC / IAR / Keil C51<br>compile_commands + 桩头 + 方言翻译</div>
+    <div class="fc-tag">sfr / sbit / xdata / interrupt N using M</div>
+  </div>
+</div>
+
+<!-- ═══ ROW 2: 2 CARDS CENTERED ═══ -->
+<div class="row2">
+  <div class="fc b">
+    <div class="fc-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    </div>
+    <div class="fc-t">中断冲突审计</div>
+    <div class="fc-d">C1-C5 五类中断数据访问冲突模式检测<br>动态发现保护原语，volatile &ne; safe 深度分析</div>
+    <div class="fc-tag">C1 atomic &middot; C2 array &middot; C3 super-word &middot; C4 correlated &middot; C5 RMW</div>
+  </div>
+  <div class="fc c">
+    <div class="fc-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    </div>
+    <div class="fc-t">可信工具链深度集成</div>
+    <div class="fc-d">充分利用轩宇天字系列可信工具链<br>可信编译 / 可信测试 / 全链路工具协同</div>
+    <div class="fc-tag">轩宇天字 &middot; 可信编译 &middot; 可信测试</div>
+  </div>
+</div>
+
+<!-- ═══ STANDARDS ═══ -->
+<div class="stds">
+  <div class="stds-lbl">Compliance</div>
+  <div class="stds-div"></div>
+  <div class="stds-b">GJB 5000A</div>
+  <div class="stds-b">GJB 2725</div>
+  <div class="stds-b">GJB 141</div>
+  <div class="stds-b">DO-178C</div>
+  <div class="stds-b">IEC 61508</div>
+  <div class="stds-b">MISRA-C-2012</div>
+  <div class="stds-spacer"></div>
+  <div class="stds-tagline">一条命令，启动全流程嵌入式软件合规测试</div>
+</div>
+
+</body>
+</html>

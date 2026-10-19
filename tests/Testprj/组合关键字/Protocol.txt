@@ -1,0 +1,219 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+启动协议发送
+    [Documentation]    在${time}秒， 启动协议：${protocol} 发送
+    [Arguments]    ${time}    ${protocol}    ${cycle}
+    VTest_WaitToTime  ${time}    
+    ${result0}  DataPool_StartProtocolSend  ${protocol}  ${cycle}    
+    [Return]
+终止协议发送
+    [Documentation]    在${time}秒， 终止协议：${protocol} 发送
+    [Arguments]    ${time}    ${protocol}
+    VTest_WaitToTime  ${time}    
+    DataPool_EndProtocolSend  ${protocol}    
+    [Return]
+监视协议发送
+    [Documentation]    在${time}秒， 监视协议：${protocol} 发送
+    [Arguments]    ${time}    ${protocol}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProcetalSend  ${protocol}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+启动协议接收
+    [Documentation]    在${time}秒， 启动协议：${protocol} 接受
+    [Arguments]    ${time}    ${protocol}
+    VTest_WaitToTime  ${time}    
+    DataPool_StartProtocolRecv  ${protocol}    
+    [Return]
+终止协议接收
+    [Documentation]    在${time}秒， 终止协议：${protocol} 接受
+    [Arguments]    ${time}    ${protocol}
+    VTest_WaitToTime  ${time}    
+    DataPool_EndProtocolRecv  ${protocol}    
+    [Return]
+监视协议接收
+    [Documentation]    在${time}秒， 监视协议：${protocol} 接受
+    [Arguments]    ${time}    ${protocol}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProcotolRecv  ${protocol}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项相等
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项 ：${item}= ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItemEqual  ${protocol}  ${item}  ${expect}  ${overtime}    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项不等
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} != ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItemUnequal  ${protocol}  ${item}  ${expect}  ${overtime}    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项大于
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} > ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItemGreater  ${protocol}  ${item}  ${expect}  ${overtime}    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项小于
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} < ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItemLess  ${protocol}  ${item}  ${expect}  ${overtime}    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项域
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${lower}< ${item} < ${upper}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${lower}    ${upper}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItemScope  ${protocol}  ${item}  ${lower}  ${upper}  ${overtime}    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议发送C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 发送
+    [Arguments]    ${time}    ${protocol}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProcetalSend  ${protocol}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议接受C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 接受
+    [Arguments]    ${time}    ${protocol}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProcotolRecv  ${protocol}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项相等C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项 ：${item}= ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItemEqual  ${protocol}  ${item}  ${expect}  ${overtime}
+    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项不等C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} != ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue}
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItemUnequal  ${protocol}  ${item}  ${expect}  ${overtime}
+    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项大于C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} > ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItemGreater  ${protocol}  ${item}  ${expect}  ${overtime}
+    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项小于C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${item} < ${expect}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItemLess  ${protocol}  ${item}  ${expect}  ${overtime}
+    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议项域C
+    [Documentation]    在${time}秒， 监视协议：${protocol} 的协议项：${lower}< ${item} < ${upper}<=>在@${curtime}秒， ${protocol}.${item} = @${RealValue} 
+    [Arguments]    ${time}    ${protocol}    ${item}    ${lower}    ${upper}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItemScope  ${protocol}  ${item}  ${lower}  ${upper}  ${overtime}
+    
+    ${RealValue}  DataPool_GetValue  ${item}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议相等
+    [Documentation]    在${time}秒， 监视协议${protocol} = ${expect}
+    [Arguments]    ${time}    ${protocol}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProcotolRecvAllEqual  ${protocol}  ${expect}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议组相等
+    [Documentation]    在${time}秒， 监视协议${protocol}中${expect}
+    [Arguments]    ${time}    ${protocol}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItems  ${protocol}  ${expect}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议相等C
+    [Documentation]    在${time}秒， 监视协议${protocol} = ${expect}
+    [Arguments]    ${time}    ${protocol}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProcotolRecvAllEqual  ${protocol}  ${expect}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视协议组相等C
+    [Documentation]    在${time}秒， 监视协议${protocol} 中 ${expect}
+    [Arguments]    ${time}    ${protocol}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${curtime}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItems  ${protocol}  ${expect}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视组协议项
+    [Documentation]    在${time}秒，监视${condition}
+    [Arguments]    ${time}    ${protocols}    ${condition}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolRecvItems  ${protocols}  ${condition}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]
+监视协议项表达式
+    [Documentation]    在${time}秒，监视${expression}
+    [Arguments]    ${time}    ${protocols}    ${expression}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    DataPool_WatchProtocolExpression  ${protocols}  ${expression}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]
+监视协议项表达式C
+    [Documentation]    在${time}秒，监视${expression}
+    [Arguments]    ${time}    ${protocols}    ${expression}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolExpression  ${protocols}  ${expression}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]
+监视组协议项C
+    [Documentation]    在${time}秒，监视${condition}
+    [Arguments]    ${time}    ${protocols}    ${condition}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  DataPool_WatchProtocolRecvItems  ${protocols}  ${condition}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]
+

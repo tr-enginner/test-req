@@ -1,0 +1,4 @@
+interface:
+  display_name: "测试需求第1章"
+  short_description: "从Matrix来源文档中提取测试需求文档第1章结构化字段"
+  default_prompt: "Use $test-requirement-chapter1 to extract the chapter 1 scope fields from Matrix source artifacts."

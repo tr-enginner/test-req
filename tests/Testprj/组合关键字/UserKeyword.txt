@@ -1,0 +1,10 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\AsyncLibrary.py
+Resource    组合关键字\\Thread.txt
+Resource    组合关键字\\GlobalVar.txt
+
+*** Variables ***
+
+
+*** Keywords ***
+

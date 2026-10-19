@@ -1,0 +1,4 @@
+agents:
+  recovery-test-content-modeler:
+    skill: recovery-test-requirements
+    default_prompt: "使用 $recovery-test-requirements 从指定功能需求文本生成4.8恢复性测试raw JSON。"

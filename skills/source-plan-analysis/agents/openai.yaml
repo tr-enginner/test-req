@@ -1,0 +1,4 @@
+interface:
+  display_name: "来源规划分析"
+  short_description: "分析 Phase 2 的主文档与补充文档选择。"
+  default_prompt: "使用 $source-plan-analysis 分析 Phase 2 文档候选清单并规划 source-plan.json。"

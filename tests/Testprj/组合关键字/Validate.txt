@@ -1,0 +1,43 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+相等
+    [Documentation]    值${Var1}==值${Var2}相等<=>实际值1=${Var1}，实际值2=${Var2}
+    [Arguments]    ${Var1}    ${Var2}
+    Should_Be_Equal_As_Numbers  ${Var1}  ${Var2}    
+    [Return]
+不相等
+    [Documentation]    值${Var1}！=值${Var2}<=>实际值1=${Var1}，实际值2=${Var2}
+    [Arguments]    ${Var1}    ${Var2}
+    Should_Not_Be_Equal_As_Numbers  ${Var1}  ${Var2}    
+    [Return]
+域判读
+    [Documentation]    ${LowerLimit}< 预期值${Var} < ${UpLimit}<=>实际值 = ${Var}
+    [Arguments]    ${Var}    ${LowerLimit}    ${UpLimit}
+    Should_Be_True  ${Var} >= ${LowerLimit} and ${var} <= ${UpLimit}    
+    [Return]
+大于
+    [Documentation]    预期值${Var} > ${LowerLimit}<=>实际值 = ${Var} 
+    [Arguments]    ${Var}    ${LowerLimit}
+    Should_Be_True   ${Var} >${LowerLimit}    
+    [Return]
+大于等于
+    [Documentation]    预期值${Var} >= ${LowerLimit}<=>实际值 = ${Var}
+    [Arguments]    ${Var}    ${LowerLimit}
+    Should_Be_True   ${Var} >=${LowerLimit}    
+    [Return]
+小于
+    [Documentation]    预期值${Var} < ${upperLimit}<=>实际值 = ${Var} 
+    [Arguments]    ${Var}    ${upperLimit}
+    Should_Be_True   ${Var} < ${upperLimit}    
+    [Return]
+小于等于
+    [Documentation]    预期值${Var} <= ${upperLimit}<=>实际值 = ${Var} 
+    [Arguments]    ${Var}    ${upperLimit}
+    Should_Be_True   ${Var} <= ${upperLimit}    
+    [Return]
+

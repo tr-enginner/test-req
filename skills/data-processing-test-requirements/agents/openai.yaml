@@ -1,0 +1,4 @@
+interface:
+  display_name: "数据处理测试需求"
+  short_description: "提取4.7数据采集、转换、剔除、融合和解释需求"
+  default_prompt: "使用 $data-processing-test-requirements 从指定功能需求文本生成4.7数据处理测试raw JSON。"

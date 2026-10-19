@@ -1,0 +1,38 @@
+[Unit]
+Description=Matrix Agent Project Manager
+Documentation=https://github.com/matrix-embedded-agent
+After=network.target nginx.service
+
+[Service]
+Type=simple
+User=matrix
+Group=matrix
+
+# Core paths
+ExecStart=/opt/matrix/runtime/bun run /opt/matrix/server/manager.ts
+WorkingDirectory=/opt/matrix
+
+# Directories
+Environment=MATRIX_DATA_DIR=/data/matrix-projects
+Environment=OPENCODE_BIN=/opt/matrix/runtime/opencode
+Environment=BUN_BIN=/opt/matrix/runtime/bun
+Environment=MATRIX_PLUGIN_DIR=/opt/matrix/plugin
+Environment=NGINX_CONF_DIR=/opt/matrix/nginx.d
+Environment=MATRIX_RUN_DIR=/opt/matrix/run
+
+# LLM configuration (edit these for your deployment)
+Environment=LLM_BASE_URL=http://llm-server:8000/v1
+Environment=LLM_MODEL=qwen2.5-72b-instruct
+#Environment=LLM_API_KEY=
+
+# Restart policy
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/data/matrix-projects /opt/matrix/run /opt/matrix/nginx.d
+
+[Install]
+WantedBy=multi-user.target

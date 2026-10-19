@@ -1,0 +1,4 @@
+interface:
+  display_name: "硬件看门狗接口领域分析"
+  short_description: "为通用硬件接口模型补充看门狗总述、喂狗数据流和表格归类经验。"
+  default_prompt: "使用 $watchdog-interface-analysis，并同时遵循 $hardware-interface-modeling 和 $hardware-interface-dataflow-constraints，为当前硬件看门狗候选补充领域证据。"

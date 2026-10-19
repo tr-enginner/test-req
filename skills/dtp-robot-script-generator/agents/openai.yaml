@@ -1,0 +1,4 @@
+interface:
+  display_name: "DTP Robot Script Generator"
+  short_description: "Render layer-3 DTP Robot scripts."
+  default_prompt: "Use $dtp-robot-script-generator to validate resolved DTP steps from generated-test-data.json and render .robot files without inferring protocols or parameters."

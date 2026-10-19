@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.8.10 on win32)" generated="2026-03-09T10:33:05.555335" rpa="false" schemaversion="5">
+<suite id="s1" name="Demo" source="C:\claude\matrix-embedded-agent\tests\sample-robot\demo.robot">
+<test id="s1-t1" name="String Equality Test" line="11">
+<kw name="Should Be Equal" owner="BuiltIn">
+<arg>${MESSAGE}</arg>
+<arg>${EXPECTED}</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<doc>Verify two strings are equal</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</test>
+<test id="s1-t2" name="Arithmetic Addition Test" line="15">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-03-09T10:33:05.587168" level="INFO">${result} = 42</msg>
+<var>${result}</var>
+<arg>20 + 22</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2026-03-09T10:33:05.587168" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${result}</arg>
+<arg>${NUMBER}</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<doc>Verify basic addition</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</test>
+<test id="s1-t3" name="List Contains Value Test" line="20">
+<kw name="Create List">
+<return>
+<value>${items}</value>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</return>
+<msg time="2026-03-09T10:33:05.587168" level="INFO">@{fruits} = [ apple | banana | cherry ]</msg>
+<var>@{fruits}</var>
+<arg>apple</arg>
+<arg>banana</arg>
+<arg>cherry</arg>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<kw name="List Should Contain Value" owner="Collections">
+<arg>${fruits}</arg>
+<arg>banana</arg>
+<doc>Fails if the ``value`` is not found from ``list``.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<doc>Verify list operations</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</test>
+<test id="s1-t4" name="Length Check Test" line="30">
+<kw name="Get Length" owner="BuiltIn">
+<msg time="2026-03-09T10:33:05.587168" level="INFO">Length is 23.</msg>
+<msg time="2026-03-09T10:33:05.587168" level="INFO">${length} = 23</msg>
+<var>${length}</var>
+<arg>${MESSAGE}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${length} &gt; 10</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</kw>
+<doc>Verify string length</doc>
+<status status="PASS" start="2026-03-09T10:33:05.587168" elapsed="0.000000"/>
+</test>
+<doc>Matrix Robot Executor Demo Test Suite</doc>
+<status status="PASS" start="2026-03-09T10:33:05.555335" elapsed="0.031833"/>
+</suite>
+<statistics>
+<total>
+<stat pass="4" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Demo" id="s1" pass="4" fail="0" skip="0">Demo</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

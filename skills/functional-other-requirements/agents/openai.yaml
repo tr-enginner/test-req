@@ -1,0 +1,4 @@
+interface:
+  display_name: "剩余功能需求"
+  short_description: "生成 4.1 中除初始化外的功能需求内容。"
+  default_prompt: "使用 $functional-other-requirements 生成 4.1 剩余功能需求正文。"

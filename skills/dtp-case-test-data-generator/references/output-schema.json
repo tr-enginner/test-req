@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dtp-case-test-data-generator.runtime-output-schema",
+  "title": "DTP Case Test Data Runtime Contract",
+  "description": "Compact Robot-facing output. Full generation evidence is stored in per-case diagnostic files.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_files", "diagnostics", "cases", "warnings"],
+  "properties": {
+    "schema_version": {
+      "const": "1.1.0"
+    },
+    "project_name": {
+      "type": "string"
+    },
+    "source_files": {
+      "type": "object",
+      "required": ["todo_file", "confirmation_tests_file", "keyword_dir", "project_root"],
+      "properties": {
+        "todo_file": { "type": "string" },
+        "confirmation_tests_file": { "type": "string" },
+        "keyword_dir": { "type": "string" },
+        "generated_data_files_index": { "type": "string" },
+        "argument_retry_context": { "type": "string" },
+        "generated_test_data_file": { "type": "string" },
+        "diagnostics_index": { "type": "string" },
+        "case_checkpoint_dir": { "type": "string" },
+        "case_diagnostics_dir": { "type": "string" },
+        "project_root": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index_file", "case_checkpoint_dir", "case_diagnostics_dir"],
+      "properties": {
+        "index_file": { "type": "string" },
+        "case_checkpoint_dir": { "type": "string" },
+        "case_diagnostics_dir": { "type": "string" }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/case" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "translate_status", "generated_steps", "warnings"],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 1 },
+        "translate_status": { "const": "success" },
+        "case_name": { "type": "string" },
+        "test_purpose": { "type": "string" },
+        "test_environment": { "type": "string", "not": { "const": "硬平台测试环境" } },
+        "generated_steps": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/step" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_index",
+        "keyword_name",
+        "resolved_arguments",
+        "generated_data_files",
+        "warnings"
+      ],
+      "properties": {
+        "step_index": { "type": "integer", "minimum": 1 },
+        "keyword_name": { "type": "string", "minLength": 1 },
+        "step_description": { "type": "string" },
+        "resolved_arguments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/resolvedArgument" }
+        },
+        "generated_data_files": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/generatedDataFile" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 2
+        }
+      }
+    },
+    "resolvedArgument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "type": "string" },
+        "value": { "type": ["string", "number", "boolean"] },
+        "semantic": { "type": "string" }
+      }
+    },
+    "generatedDataFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "argument_name",
+        "content_generation_required",
+        "requested_file_name",
+        "file_path"
+      ],
+      "properties": {
+        "argument_name": { "type": "string" },
+        "content_generation_required": { "type": "boolean" },
+        "requested_file_name": { "type": "string" },
+        "file_path": { "type": "string" },
+        "flow_direction": { "enum": ["input", "output", "unknown"] },
+        "variant_type": { "type": "string" }
+      }
+    }
+  }
+}

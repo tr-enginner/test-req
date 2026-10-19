@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "source_data_file": ".matrix/data/dtp-generation/generated-test-data.json",
+  "dtp_root": ".matrix/data/DTPProject",
+  "runtime_dir": "V1",
+  "output_dir": ".matrix/data/DTPProject/V1/测试用例",
+  "cases": [
+    {
+      "case_id": "TC-GN-001",
+      "case_name": "速变遥测轮询",
+      "output_robot_file": ".matrix/data/DTPProject/V1/测试用例/TC-GN-001.robot",
+      "resource_files": [
+        "组合关键字\\\\VTest.txt",
+        "组合关键字\\\\Protocol.txt"
+      ],
+      "vte_file": ".matrix/data/DTPProject/V1/pindemo/pindemo.vte",
+      "rendered_step_count": 2,
+      "downgraded_step_count": 1,
+      "warnings": [
+        "step 2 keyword_name was not found in 组合关键字 and was downgraded to a description-style step"
+      ]
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,7 @@
+; Module definition file for VTest virtual device DLL.
+; Only MainProc needs to be exported.
+LIBRARY      "DEVICE_NAME"
+DESCRIPTION  'VTest Virtual Device DLL'
+
+EXPORTS
+    MainProc

@@ -1,0 +1,236 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Resource    组合关键字\\Validate.txt
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+获取全局变量值
+    [Documentation]    第${time}秒，获取${variableName}的值
+    [Arguments]    ${time}    ${variableName}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetVarible  ${variableName}    
+    [Return]    ${result0}
+设置全局变量值
+    [Documentation]    第${time}秒，设置${variableName}的值为${value}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    VTest_WaitToTime  ${time}    
+    VTest_SetVarible  ${variableName}  ${value}    
+    [Return]
+判读全局变量相等
+    [Documentation]    第${time}秒，${variableName} == ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    相等  ${VarValue}  ${value}    
+    [Return]    ${VarValue}
+判读全局变量不相等
+    [Documentation]    第${time}秒，${variableName} != ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    不相等  ${VarValue}  ${value}    
+    [Return]    ${VarValue}
+判读全局变量域
+    [Documentation]    第${time}秒，${minvalue} < ${variableName}  < ${maxvalue}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${minvalue}    ${maxvalue}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    域判读  ${VarValue}  ${minvalue}  ${maxvalue}    
+    [Return]    ${VarValue}
+判读全局变量大于
+    [Documentation]    第${time}秒，${variableName} > ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    大于  ${VarValue}  ${value}    
+    [Return]    ${VarValue}
+判读全局变量小于
+    [Documentation]    第${time}秒，${variableName} < ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    小于  ${VarValue}  ${value}    
+    [Return]    ${VarValue}
+判读全局变量相等C
+    [Documentation]    第${time}秒，${variableName} == ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  相等  ${VarValue}  ${value}
+    
+    [Return]    ${VarValue}
+判读全局变量不相等C
+    [Documentation]    第${time}秒，${variableName} != ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  不相等  ${VarValue}  ${value}
+    
+    [Return]    ${VarValue}
+判读全局变量大于C
+    [Documentation]    第${time}秒，${variableName} > ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  大于  ${VarValue}  ${value}
+    
+    [Return]    ${VarValue}
+判读全局变量小于C
+    [Documentation]    第${time}秒，${variableName} < ${value}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${value}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  小于  ${VarValue}  ${value}
+    
+    [Return]    ${VarValue}
+判读全局变量域C
+    [Documentation]    第${time}秒，${minvalue} < ${variableName}< ${maxvalue}<=>第${time}秒，${variableName} = ${VarValue}
+    [Arguments]    ${time}    ${variableName}    ${minvalue}    ${maxvalue}
+    ${VarValue}  获取全局变量值  ${time}  ${variableName}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  域判读  ${VarValue}  ${minvalue}  ${maxvalue}
+    
+    [Return]    ${VarValue}
+监视全局变量读操作
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的读操作<=>第@${curtime}秒，${variableName} = @${RealValue}. 
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarRead  ${variableName}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写操作
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的写操作<=>第@${curtime}秒，${variableName} = @${RealValue}. 
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWrite  ${variableName}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量读写操作
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的读写操作<=>第@${curtime}秒，${variableName} = @${RealValue}. 
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarReadWrite  ${variableName}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写相等
+    [Documentation]    第${time}秒，监视全局变量：${variableName} == ${expect}<=>第@${curtime}秒，${variableName} = @${RealValue}
+    [Arguments]    ${time}    ${variableName}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWriteEqual  ${variableName}  ${expect}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写不等
+    [Documentation]    第${time}秒，监视全局变量：${variableName} !=${unexpect}<=>第@${curtime}秒，${variableName} = @${RealValue}
+    [Arguments]    ${time}    ${variableName}    ${unexpect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWriteUnequal  ${variableName}  ${unexpect}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写大于
+    [Documentation]    第${time}秒，监视全局变量：${variableName} > ${lowerlimit}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${lowerlimit}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWriteGreater  ${variableName}  ${lowerlimit}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写小于
+    [Documentation]    第${time}秒，监视全局变量：${variableName} < ${upperlimit}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${upperlimit}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWriteLess  ${variableName}  ${upperlimit}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写域
+    [Documentation]    第${time}秒，监视全局变量：${lowerlimit} < ${variableName} < ${upperlimit}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${lowerlimit}    ${upperlimit}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchVarWriteScope  ${variableName}  ${lowerlimit}  ${upperlimit}  ${overtime}    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量读操作C
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的读操作<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarRead  ${variableName}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写操作C
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的写操作<=>第@${curtime}秒，${variableName} = @${RealValue}
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWrite  ${variableName}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量读写操作C
+    [Documentation]    第${time}秒，监视全局变量：${variableName}的读写操作<=>第@${curtime}秒，${variableName} = @${RealValue}
+    [Arguments]    ${time}    ${variableName}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarReadWrite  ${variableName}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写相等C
+    [Documentation]    第${time}秒，监视全局变量：${variableName} == ${expect}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${expect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWriteEqual  ${variableName}  ${expect}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写不等C
+    [Documentation]    第${time}秒，监视全局变量：${variableName} !=${unexpect}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${unexpect}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWriteUnequal  ${variableName}  ${unexpect}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写大于C
+    [Documentation]    第${time}秒，监视全局变量：${variableName} > ${lowerlimit}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}    ${lowerlimit}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWriteGreater  ${variableName}  ${lowerlimit}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写小于C
+    [Documentation]    第${time}秒，监视全局变量：${variableName} < ${upperlimit}<=>第@${curtime}秒，${variableName} = @${RealValue} 
+    [Arguments]    ${time}    ${variableName}        ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWriteLess  ${variableName}  ${upperlimit}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视全局变量写域C
+    [Documentation]    第${time}秒，监视全局变量：${lowerlimit} < ${variableName} < ${upperlimit}<=>第@${curtime}秒，${variableName} = @${RealValue}
+    [Arguments]    ${time}    ${variableName}    ${lowerlimit}    ${upperlimit}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchVarWriteScope  ${variableName}  ${lowerlimit}  ${upperlimit}  ${overtime}
+    
+    ${RealValue}  VTest_GetVarible  ${variableName}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+

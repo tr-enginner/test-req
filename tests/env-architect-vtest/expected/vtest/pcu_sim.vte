@@ -1,0 +1,125 @@
+;; VTest 项目配置文件 — 卫星电源控制单元 (PCU) 仿真环境
+;; 由 EnvArchitect 智能体自动生成
+
+[ProjectName]
+PCU_SIL_Test
+
+[VersionName]
+1.0.0
+
+[SwiType]
+0
+
+;; 被测固件 ELF 文件
+[BinFiles]
+build\pcu_firmware.elf
+
+;; 源代码文件（用于符号调试和覆盖率）
+[SourceFiles]
+src\pcu_main.c
+src\pcu_hal.c
+src\pcu_mppt.c
+src\pcu_charge.c
+src\pcu_protect.c
+src\pcu_telemetry.c
+
+;; CPU 配置 — ARM Cortex-M4 (STM32F407)
+[Cpu]
+arm_cortex_m4
+
+;; CPU 频率 168MHz
+[CpuFre]
+168000000
+
+;; 虚拟外设设备 DLL 列表
+;; 格式: 设备数字标识=DLL文件名
+[Devices]
+1=vdev_adc.dll
+2=vdev_uart.dll
+3=vdev_gpio.dll
+4=vdev_pwm_capture.dll
+5=vdev_test_driver.dll
+
+;; 设备显示名称
+[Names]
+1=ADC_Sensor
+2=UART_Telemetry
+3=GPIO_Discrete
+4=PWM_Capture
+5=Test_Driver
+
+;; 引脚连接 (Pin Connect)
+;; 格式: 源设备ID.引脚名称=目标设备ID.引脚名称
+;; CPU 设备 ID 固定为 1000
+[Connect]
+;; ADC 通道连接: ADC 设备 → CPU ADC 数据寄存器
+1.adc_ch0=1000.ADC1_DR_CH0
+1.adc_ch1=1000.ADC1_DR_CH1
+1.adc_ch2=1000.ADC1_DR_CH2
+1.adc_ch3=1000.ADC1_DR_CH3
+1.adc_ch4=1000.ADC1_DR_CH4
+1.adc_ch5=1000.ADC1_DR_CH5
+1.dma_complete=1000.DMA2_Stream0_IRQ
+
+;; UART 连接: UART 设备 ↔ CPU USART1
+2.tx_data=1000.USART1_DR
+2.rx_data=1000.USART1_DR
+2.rx_irq=1000.USART1_IRQ
+
+;; GPIO 连接: GPIO 设备 ↔ CPU GPIO 端口
+3.out0=1000.GPIOA_PIN0
+3.out1=1000.GPIOA_PIN1
+3.out2=1000.GPIOA_PIN2
+3.out3=1000.GPIOA_PIN3
+3.out4=1000.GPIOA_PIN4
+3.in0=1000.GPIOB_PIN0
+3.in1=1000.GPIOB_PIN1
+
+;; PWM 捕获: CPU TIM 输出 → PWM 捕获设备
+1000.TIM1_CCR1=4.pwm_ch0
+1000.TIM1_ARR=4.pwm_arr0
+1000.TIM2_CCR1=4.pwm_ch1
+1000.TIM2_ARR=4.pwm_arr1
+
+;; 测试驱动与其他设备的虚拟端口连接
+[VPortConnect]
+5.adc_inject=1.adc_input
+5.uart_inject=2.rx_inject
+5.gpio_inject=3.input_inject
+5.gpio_monitor=3.output_monitor
+5.pwm_monitor=4.duty_output
+5.uart_capture=2.tx_capture
+
+;; 物理内存映射 (STM32F407)
+[PhyMem]
+;; Flash: 0x08000000 - 0x080FFFFF (1MB)
+0x08000000=0x100000
+;; SRAM: 0x20000000 - 0x2002FFFF (192KB)
+0x20000000=0x30000
+;; Peripherals: 0x40000000 - 0x40023FFF
+0x40000000=0x24000
+
+;; 设备属性
+[DeviceProperty]
+;; ADC 设备: 采样率、通道数、分辨率
+1.sample_rate=1000
+1.channels=6
+1.resolution=12
+
+;; UART 设备: 波特率、数据位、校验
+2.baudrate=115200
+2.databits=8
+2.parity=none
+2.stopbits=1
+
+;; GPIO 设备: 输出引脚数、输入引脚数
+3.output_pins=5
+3.input_pins=2
+
+;; PWM 捕获: 通道数
+4.channels=2
+
+;; 测试驱动: 测试脚本路径
+5.script_file=test_scripts\nominal_test.txt
+5.log_file=output\test_log.csv
+5.coverage_file=output\pcu_coverage.cox

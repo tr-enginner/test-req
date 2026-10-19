@@ -1,0 +1,4 @@
+interface:
+  display_name: "AD采集接口领域分析"
+  short_description: "为通用硬件接口模型补充AD采集检索与组织经验。"
+  default_prompt: "使用 $ad-acquisition-interface-analysis，并同时遵循 $hardware-interface-modeling 和 $hardware-interface-dataflow-constraints，为当前AD采集候选补充领域证据。"

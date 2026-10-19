@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "default_agent": "conductor",
+  "model": "private-llm/{{LLM_MODEL}}",
+  "provider": {
+    "private-llm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "私有大模型",
+      "options": {
+        "baseURL": "{{LLM_BASE_URL}}",
+        "apiKey": "{{LLM_API_KEY}}"
+      },
+      "models": {
+        "{{LLM_MODEL}}": {
+          "name": "{{LLM_MODEL}}",
+          "tool_call": true,
+          "limit": {
+            "context": {{LLM_CONTEXT_SIZE}},
+            "output": {{LLM_OUTPUT_SIZE}}
+          }
+        }
+      }
+    }
+  }
+}

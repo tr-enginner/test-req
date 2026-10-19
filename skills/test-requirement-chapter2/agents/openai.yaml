@@ -1,0 +1,4 @@
+interface:
+  display_name: "测试需求第2章"
+  short_description: "从来源文档提取并结构化测试需求的系统概述章节字段"
+  default_prompt: "Use $test-requirement-chapter2 to extract Chapter 2 system overview fields from Matrix source artifacts."

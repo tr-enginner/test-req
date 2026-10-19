@@ -1,0 +1,4 @@
+interface:
+  display_name: "接口测试需求生成"
+  short_description: "关联硬件接口契约与功能处理，生成4.3接口测试需求"
+  default_prompt: "使用 $interface-test-requirements 从功能需求源文本和硬件接口报告文本中生成一个接口主题批次的4.3接口测试需求候选项。"

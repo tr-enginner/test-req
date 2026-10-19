@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "key": "TR-XQ",
+      "file": "requirements-default.md",
+      "match": {
+        "project_types": [
+          "requirements"
+        ]
+      },
+      "fallback": true,
+      "priority": 10
+    },
+    {
+      "key": "TR-DG-STEP-GENERATED",
+      "file": "software-default.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ]
+      },
+      "fallback": true,
+      "priority": 10
+    },
+    {
+      "key": "FPGA-DG-STEP-NOT-GENERATED",
+      "file": "fpga-default.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ]
+      },
+      "fallback": true,
+      "priority": 10
+    },
+    {
+      "key": "功能测试-STEP-GENERATED",
+      "file": "software-functional.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "功能测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "性能测试-STEP-GENERATED",
+      "file": "software-performance.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "性能测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "接口测试-STEP-GENERATED",
+      "file": "software-interface.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "接口测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "可靠性安全性测试-STEP-GENERATED",
+      "file": "software-safety.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "可靠性安全性测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "余量测试-STEP-GENERATED",
+      "file": "software-margin.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "余量测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "边界测试-STEP-GENERATED",
+      "file": "software-boundary.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "边界测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "强度测试-STEP-GENERATED",
+      "file": "software-stress.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "强度测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "数据处理测试-STEP-GENERATED",
+      "file": "software-data-processing.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "数据处理测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "恢复性测试-STEP-GENERATED",
+      "file": "software-recovery.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "恢复性测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "逻辑测试-STEP-GENERATED",
+      "file": "software-logic.md",
+      "match": {
+        "project_types": [
+          "software",
+          "software_variant"
+        ],
+        "test_types": [
+          "逻辑测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-功能测试-STEP-GENERATED",
+      "file": "fpga-functional.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "功能测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-性能测试-STEP-GENERATED",
+      "file": "fpga-performance.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "性能测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-逻辑测试-STEP-GENERATED",
+      "file": "fpga-logic.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "逻辑测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-时序测试-STEP-GENERATED",
+      "file": "fpga-timing.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "时序测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-接口测试-STEP-GENERATED",
+      "file": "fpga-interface.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "接口测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-边界测试-STEP-GENERATED",
+      "file": "fpga-boundary.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "边界测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "FPGA-可靠性安全性测试-STEP-GENERATED",
+      "file": "fpga-safety.md",
+      "match": {
+        "project_types": [
+          "fpga"
+        ],
+        "test_types": [
+          "可靠性安全性测试"
+        ]
+      },
+      "fallback": false,
+      "priority": 30
+    },
+    {
+      "key": "satellite-功能测试-STEP-GENERATED",
+      "file": "satellite-functional.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["功能测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-性能测试-STEP-GENERATED",
+      "file": "satellite-performance.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["性能测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-可靠性安全性测试-STEP-GENERATED",
+      "file": "satellite-safety.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["可靠性安全性测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-边界测试-STEP-GENERATED",
+      "file": "satellite-boundary.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["边界测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-余量测试-STEP-GENERATED",
+      "file": "satellite-margin.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["余量测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-强度测试-STEP-GENERATED",
+      "file": "satellite-stress.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["强度测试"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": false,
+      "priority": 40
+    },
+    {
+      "key": "satellite-TR-DG-STEP-GENERATED",
+      "file": "satellite-default.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "domain": "satellite-dsp"
+      },
+      "fallback": true,
+      "priority": 20
+    },
+    {
+      "key": "test-功能测试-STEP-GENERATED",
+      "file": "test-functional.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["功能测试"]
+      },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-接口测试-STEP-GENERATED",
+      "file": "test-interface.md",
+      "match": {
+        "project_types": ["software", "software_variant"],
+        "test_types": ["接口测试"]
+      },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-性能测试-STEP-GENERATED",
+      "file": "test-software-performance.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["性能测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-可靠性安全性测试-STEP-GENERATED",
+      "file": "test-software-safety.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["可靠性安全性测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-余量测试-STEP-GENERATED",
+      "file": "test-margin.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["余量测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-边界测试-STEP-GENERATED",
+      "file": "test-boundary.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["边界测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-强度测试-STEP-GENERATED",
+      "file": "test-software-stress.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["强度测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-数据处理测试-STEP-GENERATED",
+      "file": "test-data-processing.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["数据处理测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-恢复性测试-STEP-GENERATED",
+      "file": "test-software-recovery.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["恢复性测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-逻辑测试-STEP-GENERATED",
+      "file": "test-logic.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["逻辑测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-时序测试-STEP-GENERATED",
+      "file": "test-timing.md",
+      "match": { "project_types": ["software", "software_variant"], "test_types": ["时序测试"] },
+      "fallback": false,
+      "priority": 45
+    },
+    {
+      "key": "test-TR-DG-STEP-GENERATED",
+      "file": "test-default.md",
+      "match": { "project_types": ["software", "software_variant"] },
+      "fallback": true,
+      "priority": 10
+    }
+  ]
+}

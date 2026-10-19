@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dtp-case-test-data-generator.diagnostics-index-schema",
+  "title": "DTP Case Test Data Diagnostics Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_data_file",
+    "project_root",
+    "summary",
+    "cases",
+    "warnings",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "source_data_file": { "type": "string" },
+    "project_root": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_count", "step_count", "passed_steps", "warning_steps", "failed_steps"],
+      "properties": {
+        "case_count": { "type": "integer", "minimum": 0 },
+        "step_count": { "type": "integer", "minimum": 0 },
+        "passed_steps": { "type": "integer", "minimum": 0 },
+        "warning_steps": { "type": "integer", "minimum": 0 },
+        "failed_steps": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "diagnostic_file",
+          "checkpoint_file",
+          "step_count",
+          "passed_steps",
+          "warning_steps",
+          "failed_steps"
+        ],
+        "properties": {
+          "case_id": { "type": "string" },
+          "diagnostic_file": { "type": "string" },
+          "checkpoint_file": { "type": "string" },
+          "step_count": { "type": "integer", "minimum": 0 },
+          "passed_steps": { "type": "integer", "minimum": 0 },
+          "warning_steps": { "type": "integer", "minimum": 0 },
+          "failed_steps": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

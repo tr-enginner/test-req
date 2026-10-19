@@ -1,0 +1,18 @@
+# Matrix Samba — Lightweight file-sharing container
+#
+# Self-built to guarantee aarch64 compatibility.
+# Shares /data/matrix-projects as a Samba network share.
+#
+# Build: docker build -f Dockerfile.samba -t matrix-samba .
+
+FROM debian:bookworm-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends samba && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY smb.conf /etc/samba/smb.conf
+
+EXPOSE 445
+
+CMD ["smbd", "--foreground", "--no-process-group", "--debug-stdout"]

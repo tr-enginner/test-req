@@ -1,0 +1,94 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\Process.py
+Library    Lib\\site-packages\\robot\\libraries\\AsyncLibrary.py
+
+*** Variables ***
+
+
+*** Keywords ***
+启动VTEST
+    [Arguments]    ${prj}
+    ${PrjPath}  GetProjectPath  ${SUITE SOURCE}    
+    @{para}  RetArray  ${prj}  ${PrjPath}    
+    ${port}  GetPort    
+    ConfigVtePort  ${port}    
+    ${vtestExe}  GetVTestPath  VTest\\\\VTest\\\\vtest.exe    
+    ${x}  start_process  ${vtestExe}  @{para}  0    
+    CreateConnect  ${port}    
+    Config_ProjectBasePath  ${PrjPath}    
+    SetupConfig  ${OUTPUT DIR}    
+    SoftDriver_SaveStatistic  ${SUITE SOURCE}  ${TEST NAME}    
+    [Return]
+结束VTEST
+    [Documentation]    执行结束，创建报告
+    [Arguments]
+    terminate_all_processes  0    
+    [Return]
+暂停VTEST
+    [Documentation]    在${time}秒暂停运行;
+    [Arguments]    ${time}
+    VTest_WaitToTime  ${time}    
+    VTest_Pause    
+    [Return]
+VTest复位
+    [Documentation]    在第${time}秒VTest复位；
+    [Arguments]    ${time}
+    VTest_WaitToTime  ${time}    
+    VTest_Reset    
+    [Return]
+VTest运行至绝对时间
+    [Documentation]    仿真运行至第${PTime}秒;
+    [Arguments]    ${PTime}
+    VTest_WaitToTime  ${PTime}    
+    [Return]
+VTest当前仿真时间
+    [Arguments]
+    ${time}  VTest_GetCurrentTime    
+    [Return]    ${time}
+VTest运行时间段
+    [Documentation]    等待仿真运行${PTime}秒；
+    [Arguments]    ${PTime}
+    VTest_WaitForTime  ${PTime}    
+    [Return]
+保存当前驱动整体状态数据
+    [Documentation]    在第${time}秒,保存当前驱动整体状态数据到文件${SavePath}里；
+    [Arguments]    ${time}    ${SavePath}
+    VTest_WaitToTime  ${time}    
+    VTest_SaveStatus  ${SavePath}    
+    [Return]
+恢复当前驱动整体状态数据
+    [Documentation]    在第${time}秒,从文件${SavePath}中恢复当前驱动整体状态数据;
+    [Arguments]    ${time}    ${SavePath}
+    VTest_WaitToTime  ${time}    
+    VTest_LoadStatus  ${SavePath}    
+    [Return]
+DTP脚本结束
+    [Documentation]    -
+    [Arguments]    ${time}
+    VTest_WaitToTime  ${time}    
+    Script_End  -1    
+    [Return]
+测试结束
+    [Documentation]    在${Time}秒时刻，结束脚本以及关闭VTest
+    [Arguments]    ${Time}
+    DTP脚本结束  ${Time}    
+    async_terminate_all_thread_keyword    
+    Thread_ForceEndSubAllParserCmd    
+    CloseAllSocket    
+    async_all_kill_thread    
+    结束VTEST    
+    [Return]
+设置基准时间
+    [Documentation]    在${time}秒，设置基准时间
+    [Arguments]    ${time}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_SetBasedTime    
+    [Return]
+延时
+    [Documentation]    延时${delay}秒
+    [Arguments]    ${delay}
+    VTest_WaitForTime  ${delay}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+

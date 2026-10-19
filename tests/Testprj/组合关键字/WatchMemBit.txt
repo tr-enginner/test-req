@@ -1,0 +1,169 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+监视Bit读相等
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitReadEqual  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读不等
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitReadUnequal  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写相等
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitWriteEqual  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写不等
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitWriteUnequal  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写大于
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitWriteGreater  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写小于
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitWriteLess  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写区间
+    [Documentation]    在${time}秒，监视地址${addr}， ${lower}<  bit ${pos}：${len} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitWriteScope  ${addr}  ${pos}  ${len}  ${lower}  ${upper}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读大于
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitReadGreater  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读小于
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitReadLess  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读区间
+    [Documentation]    在${time}秒，监视地址${addr}， ${lower}<  bit ${pos}：${len} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchBitReadScope  ${addr}  ${pos}  ${len}  ${lower}  ${upper}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读相等C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitReadEqual  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读不等C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitReadUnequal  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写相等C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitWriteEqual  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写不等C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitWriteUnequal  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写大于C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitWriteGreater  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写小于C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitWriteLess  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit写区间C
+    [Documentation]    在${time}秒，监视地址${addr}， ${lower}<  bit ${pos}：${len} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitWriteScope  ${addr}  ${pos}  ${len}  ${lower}  ${upper}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读大于C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitReadGreater  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读小于C
+    [Documentation]    在${time}秒，监视地址${addr}-${pos}：${len} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitReadLess  ${addr}  ${pos}  ${len}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视Bit读区间C
+    [Documentation]    在${time}秒，监视地址${addr}， ${lower}<  bit ${pos}：${len} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${pos}    ${len}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchBitReadScope  ${addr}  ${pos}  ${len}  ${lower}  ${upper}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+

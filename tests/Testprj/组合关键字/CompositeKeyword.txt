@@ -1,0 +1,12 @@
+*** Settings ***
+Resource    组合关键字\\Thread.txt
+Library    Lib\\site-packages\\robot\\libraries\\AsyncLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Resource    组合关键字\\VTest.txt
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+

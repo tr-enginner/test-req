@@ -1,0 +1,17 @@
+# Python packages bundled into tools-archive/python/<platform>/ and the Docker runtime.
+# Keep versions pinned so everyone preparing offline bundles gets the same Python payload.
+
+docxtpl==0.20.2
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+lxml==6.0.3
+python-docx==1.2.0
+typing_extensions==4.15.0
+
+fastapi>=0.115,<1.0
+uvicorn>=0.30,<1.0
+pydantic>=2.8,<3.0
+tree-sitter>=0.24,<1.0
+tree-sitter-c>=0.23,<1.0
+
+

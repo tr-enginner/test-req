@@ -1,0 +1,50 @@
+# FPGA 功能测试提示词模板
+
+## 适用范围
+- 模板 Key：`FPGA-功能测试-STEP-GENERATED`
+- 说明：适用于 fpga + 功能测试。
+
+## 业务说明
+用于 FPGA 功能验证场景。 提示词正文已收敛为短结构，业务人员如需优化，优先调整“类型专属规则”和“输入信息”的表达，不要在 `prompt` 代码块中加入大段示例或教学说明。
+
+## 占位符
+- `{tr_id}`：测试需求标识。
+- `{tr_handling}`：测试需求的处理/功能描述。
+- `{tr_name}`：测试项名称；仅在正文中出现时需要保留。
+- `{tr_sufficiency}`：充分性要求。
+- `{tr_testMethod}`：测试方法。
+- `{tr_passCriteria}`：通过准则。
+- `{tr_input_flow}`：输入流说明。
+- `{tr_output_flow}`：输出流说明。
+- 若正文中未使用某个占位符，可忽略对应说明。
+
+## 提示词正文
+```prompt
+### 任务目标
+你要为一条 FPGA 功能测试需求生成确认测试用例。
+
+### 输出格式
+- 只输出 JSON 数组。
+- 每个用例包含 `test_case_name`、`test_purpose`、`test_environment`、`initial_settings`、`test_input`、`test_step`。
+- `test_step` 是数组；每个元素只包含 `步骤描述` 和 `预期结果`。
+
+### 通用生成规则
+- 只输出严格 JSON 数组，不要输出解释、标题或代码块标记。
+- 仅围绕当前 requirement 生成，不补充无关场景。
+- `步骤描述`写测试动作，`预期结果`写可观察、可验证结果。
+- `步骤描述`和`预期结果`都以中文句号结尾。
+- JSON 必须使用双引号、无末尾逗号、可直接解析。
+- `test_purpose`、`initial_settings`、`test_input` 以中文句号结尾。
+
+### 类型专属规则
+- 如无更明确约束，`test_environment` 可填写“待系统填充”。
+- 同一 requirement 的多个验证动作尽量收敛到同一主用例中，用多条步骤展开。
+- 如果测试方法和通过准则都按序号列出且条数一致，优先按序号一一对应生成步骤与预期结果；若条数不一致，以测试方法条数为准组织步骤，再结合通过准则生成对应预期结果。
+
+### 输入信息
+- 测试项名称：{tr_name}
+- 测试需求：{tr_id}：{tr_handling}
+- 充分性要求：{tr_sufficiency}
+- 测试方法：{tr_testMethod}
+- 通过准则：{tr_passCriteria}
+```

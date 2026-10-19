@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dtp-robot-script-generator.output-schema",
+  "title": "DTP Robot Script Generator Output",
+  "description": "Structured output for robot-generation results after rendering .robot files.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_data_file",
+    "dtp_root",
+    "runtime_dir",
+    "output_dir",
+    "cases",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_data_file": {
+      "type": "string"
+    },
+    "dtp_root": {
+      "type": "string"
+    },
+    "runtime_dir": {
+      "type": "string"
+    },
+    "output_dir": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/caseResult"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "caseResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "output_robot_file",
+        "resource_files",
+        "rendered_step_count",
+        "downgraded_step_count",
+        "warnings"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string"
+        },
+        "case_name": {
+          "type": "string"
+        },
+        "output_robot_file": {
+          "type": "string"
+        },
+        "resource_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vte_file": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rendered_step_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "downgraded_step_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

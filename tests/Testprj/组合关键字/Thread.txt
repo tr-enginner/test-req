@@ -1,0 +1,24 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\AsyncLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+
+*** Variables ***
+
+
+*** Keywords ***
+创建VTest子线程
+    [Arguments]
+    ${handle}  async_last_handle    
+    Thread_CreateSubParserCmd  ${handle}    
+    [Return]
+结束VTest子线程
+    [Arguments]
+    Thread_EndSubParserCmd    
+    CloseSocket    
+    [Return]
+等待子线程结束
+    [Documentation]    等待子线程结束
+    [Arguments]
+    Thread_WaitSubParserCmdEnd    
+    [Return]
+

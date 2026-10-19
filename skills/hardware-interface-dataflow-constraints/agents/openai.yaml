@@ -1,0 +1,4 @@
+interface:
+  display_name: "硬件接口数据流方向约束"
+  short_description: "以被测软件为中心统一判定硬件接口输入流和输出流方向。"
+  default_prompt: "使用 $hardware-interface-dataflow-constraints 以被测软件（CPU）为边界判定硬件接口和功能内容的输入流与输出流。"

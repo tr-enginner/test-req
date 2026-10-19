@@ -1,0 +1,3 @@
+[ ERROR ] Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 6: Library 'Lib\site-packages\robot\libraries\VTestLibrary.py' does not exist.
+[ ERROR ] Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 8: Library 'Lib\site-packages\robot\libraries\AsyncLibrary.py' does not exist.
+[ ERROR ] Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 9: Resource file '组合关键字\VTest.txt' does not exist.

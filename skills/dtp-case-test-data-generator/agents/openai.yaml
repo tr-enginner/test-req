@@ -1,0 +1,4 @@
+interface:
+  display_name: "DTP Case Test Data Generator"
+  short_description: "Instantiate pending DTP cases into generated-test-data.json."
+  default_prompt: "Use $dtp-case-test-data-generator to read test-cases-todo.txt and confirmation-tests.json, resolve keyword arguments, reuse generated data files, and emit generated-test-data.json."

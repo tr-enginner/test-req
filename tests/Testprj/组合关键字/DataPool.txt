@@ -1,0 +1,117 @@
+*** Settings ***
+Documentation    数据池相关的关键字
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\String.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+Resource    组合关键字\\Validate.txt
+Library    Lib\\site-packages\\robot\\libraries\\Operator.py
+
+*** Variables ***
+
+
+*** Keywords ***
+读数据池
+    [Documentation]    获取${name}的值
+    [Arguments]    ${time}    ${name}
+    VTest_WaitToTime  ${time}    
+    ${result0}  DataPool_GetValue  ${name}    
+    [Return]    ${result0}
+写数据池
+    [Documentation]    第${time}秒，设置${name}的值为${value}
+    [Arguments]    ${time}    ${name}    ${value}
+    VTest_WaitToTime  ${time}    
+    DataPool_SetValue  ${name}  ${value}    
+    [Return]
+写组数据池
+    [Documentation]    第${time}秒，设置${items}
+    [Arguments]    ${time}    ${items}
+    VTest_WaitToTime  ${time}    
+    DataPool_SetItemsValue  ${items}    
+    [Return]
+判读数据池项相等
+    [Documentation]    第${time}秒，${Name} = ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    Should_Be_Equal_As_Numbers  ${Retval}  ${Value}    
+    [Return]    ${Retval}
+判读数据池项不等
+    [Documentation]    第${time}秒，${Name} ！= ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    Should_Not_Be_Equal_As_Numbers  ${Retval}  ${Value}    
+    [Return]    ${Retval}
+判读数据池项大于
+    [Documentation]    第${time}秒，${Name} > ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    大于  ${Retval}  ${Value}    
+    [Return]    ${Retval}
+判读数据池项小于
+    [Documentation]    第${time}秒，${Name} < ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    小于  ${Retval}  ${Value}    
+    [Return]    ${Retval}
+判读数据池项域
+    [Documentation]    第${time}秒，${lower} < ${Name} < ${upper}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${lower}    ${upper}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    域判读  ${Retval}  ${lower}  ${upper}    
+    [Return]    ${Retval}
+判读数据池项相等C
+    [Documentation]    第${time}秒，${Name} = ${Value}<=>第${time}秒，${Name}的值为${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  Should_Be_Equal_As_Numbers  ${Retval}  ${Value}
+    
+    [Return]    ${Retval}
+判读数据池项不等C
+    [Documentation]    第${time}秒，${Name} ！= ${Value}<=>第${time}秒，${Name}的值为${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  Should_Not_Be_Equal_As_Numbers  ${Retval}  ${Value}
+    
+    [Return]    ${Retval}
+判读数据池项大于C
+    [Documentation]    第${time}秒，${Name} > ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  大于  ${Retval}  ${Value}
+    
+    [Return]    ${Retval}
+判读数据池项小于C
+    [Documentation]    第${time}秒，${Name} < ${Value}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${Value}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  小于  ${Retval}  ${Value}
+    
+    [Return]    ${Retval}
+判读数据池项域C
+    [Documentation]    第${time}秒，${lower} < ${Name} < ${upper}<=>第${time}秒，${Name} = ${Retval}
+    [Arguments]    ${time}    ${Name}    ${lower}    ${upper}
+    ${Retval}  读数据池  ${time}  ${Name}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  域判读  ${Retval}  ${lower}  ${upper}
+    
+    [Return]    ${Retval}
+读数据池并保存到文件
+    [Documentation]    获取${name}的值
+    [Arguments]    ${time}    ${name}    ${pathfile}
+    ${DataPoolValue}  读数据池  ${time}  ${name}    
+    ${DataPoolValueString}  Convert_To_String  ${DataPoolValue}    
+    ${ValueToWrite}  Catenate  ${name}=${DataPoolValueString}    
+    AppendsToFile  ${pathfile}  ${ValueToWrite}    
+    [Return]    ${result0}
+读数据池并换行保存到文件
+    [Documentation]    获取${name}的值
+    [Arguments]    ${time}    ${name}    ${pathfile}
+    ${DataPoolValue}  读数据池  ${time}  ${name}    
+    ${DataPoolValueString}  Convert_To_String  ${DataPoolValue}    
+    ${ValueToWrite}  Catenate  ${name}=${DataPoolValueString}    
+    AppendsNewLineToFile  ${pathfile}  ${ValueToWrite}    
+    [Return]
+

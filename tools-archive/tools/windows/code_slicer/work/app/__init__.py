@@ -1,0 +1,1 @@
+"""Lightweight code indexer package."""

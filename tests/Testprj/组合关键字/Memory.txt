@@ -1,0 +1,209 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+Library    Lib\\site-packages\\robot\\libraries\\String.py
+Library    Lib\\site-packages\\robot\\libraries\\Collections.py
+
+*** Variables ***
+
+
+*** Keywords ***
+设置内存数据8bit
+    [Documentation]    第${time}秒，设置内存地址${address}的数据为${dataOrFilePath}
+    [Arguments]    ${time}    ${address}    ${addressType}    ${dataOrFilePath}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemData  ${address}  ${addressType}  ${dataOrFilePath}    
+    [Return]
+批量设置内存数据8bit
+    [Documentation]    第${time}秒，设置从内存地址${startaddress}到内存地址${endaddress}的数据为${data}
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${addressType}    ${data}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemSameData  ${startaddress}  ${endaddress}  ${addressType}  ${data}    
+    [Return]
+获取内存数据8bit
+    [Documentation]    第${time}秒，获取地址${address}开始${MemLen}字节数据内容
+    [Arguments]    ${time}    ${address}    ${addressType}    ${MemLen}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMemData  ${address}  ${addressType}  ${MemLen}    
+    [Return]    ${result0}
+设置指定地址的bit值8bit
+    [Documentation]    第${time}秒，在地址${address}上设置掩码${Mask}、数据${Var}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}    ${Var}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemByteBit  ${address}  ${MemType}  ${Mask}  ${Var}    
+    [Return]
+获取指定地址的bit值8bit
+    [Documentation]    第${time}秒，在地址${address}上获取掩码为${Mask}的数据
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMemByteBit  ${address}  ${MemType}  ${Mask}    
+    [Return]    ${result0}
+判读内存值8bit
+    [Documentation]    第${time}秒,内存地址${address}的数据为${Value}<=>第${time}秒,内存地址${address}的数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${memValue}  获取内存数据8bit  ${time}  ${address}  ${MemType}  ${count}    
+    VTest_JudgeMemByteData  ${address}  ${MemType}  ${Value}    
+    [Return]    ${memValue}
+判读内存值8bitC
+    [Documentation]    第${time}秒,内存地址${address}的数据为${Value}<=>第${time}秒,内存地址${address}的数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_JudgeMemByteData  ${address}  ${MemType}  ${Value}
+    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${memValue}  获取内存数据8bit  ${time}  ${address}  ${MemType}  ${count}    
+    [Return]    ${memValue}
+设置内存数据16bit
+    [Documentation]    第${time}秒，设置内存地址${address}的数据为${dataOrFilePath}
+    [Arguments]    ${time}    ${address}    ${addressType}    ${dataOrFilePath}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMem2ByteData  ${address}  ${addressType}  ${dataOrFilePath}    
+    [Return]
+批量设置内存数据16bit
+    [Documentation]    第${time}秒，设置从内存地址${startaddress}到内存地址${endaddress}的数据为${data}
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${addressType}    ${data}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMem2ByteSameData  ${startaddress}  ${endaddress}  ${addressType}  ${data}    
+    [Return]
+获取内存数据16bit
+    [Documentation]    第${time}秒，获取地址${address}开始${MemLen}字节数据内容
+    [Arguments]    ${time}    ${address}    ${addressType}    ${MemLen}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMem2ByteData  ${address}  ${addressType}  ${MemLen}    
+    [Return]    ${result0}
+设置指定地址的bit值16bit
+    [Documentation]    第${time}秒，在地址${address}上设置掩码${Mask}、数据${Var}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}    ${Var}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMem2ByteBit  ${address}  ${MemType}  ${Mask}  ${Var}    
+    [Return]
+获取指定地址的bit值16bit
+    [Documentation]    第${time}秒，在地址${address}上获取掩码为${Mask}的数据
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMem2ByteBit  ${address}  ${MemType}  ${Mask}    
+    [Return]    ${result0}
+判读内存值16bit
+    [Documentation]    第${time}秒,内存地址${address}的数据为${Value}<=>第${time}秒,内存地址${address}的数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${memValue}  获取内存数据16bit  ${time}  ${address}  ${MemType}  ${count}    
+    VTest_JudgeMemByteData  ${address}  ${MemType}  ${Value}    
+    [Return]    ${memValue}
+判读内存值16bitC
+    [Documentation]    第${time}秒,内存地址${address}的数据为${Value}<=>第${time}秒,内存地址${address}的数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_JudgeMem2ByteData  ${address}  ${MemType}  ${Value}
+    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${result0}  获取内存数据16bit  ${time}  ${address}  ${MemType}  ${count}    
+    [Return]    ${memValue}
+设置内存数据32bit
+    [Documentation]    第${time}秒，设置内存地址${address}的字数据为${dataOrFilePath}
+    [Arguments]    ${time}    ${address}    ${addressType}    ${dataOrFilePath}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemWordData  ${address}  ${addressType}  ${dataOrFilePath}    
+    [Return]
+批量设置内存数据32bit
+    [Documentation]    第${time}秒，设置从内存地址${startaddress}到内存地址${endaddress}的字数据为${data}
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${addressType}    ${data}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemSameWordData  ${startaddress}  ${endaddress}  ${addressType}  ${data}    
+    [Return]
+获取内存数据32bit
+    [Documentation]    第${time}秒，获取地址${address}开始${MemLen}字数据内容
+    [Arguments]    ${time}    ${address}    ${addressType}    ${MemLen}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMemWordData  ${address}  ${addressType}  ${MemLen}    
+    [Return]    ${result0}
+设置指定地址bit值32bit
+    [Documentation]    第${time}秒，在地址${address}上设置掩码${Mask}、字数据${Var}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}    ${Var}
+    VTest_WaitToTime  ${time}    
+    VTest_SetMemWordBit  ${address}  ${MemType}  ${Mask}  ${Var}    
+    [Return]
+获取指定地址bit值32bit
+    [Documentation]    第${time}秒，在地址${address}上获取掩码为${Mask}的字数据
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Mask}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetMemWordBit  ${address}  ${MemType}  ${Mask}    
+    [Return]    ${result0}
+判读内存值32bit
+    [Documentation]    第${time}秒,内存地址${address}的字数据为${Value}<=>第${time}秒,内存地址${address}的字数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    VTest_JudgeMemWordData  ${address}  ${MemType}  ${Value}    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${memValue}  获取内存数据32bit  ${time}  ${address}  ${MemType}  ${count}    
+    [Return]    ${memValue}
+判读内存值32bitC
+    [Documentation]    第${time}秒,内存地址${address}的字数据为${Value}<=>第${time}秒,内存地址${address}的字数据为${memValue}
+    [Arguments]    ${time}    ${address}    ${MemType}    ${Value}
+    VTest_WaitToTime  ${time}    
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_JudgeMemWordData  ${address}  ${MemType}  ${Value}
+    
+    ${data}  ReadDataFile  ${Value}    
+    ${count}  ComputeDataCount  ${data}    
+    ${memValue}  获取内存数据32bit  ${time}  ${address}  ${MemType}  ${count}    
+    [Return]    ${memValue}
+监视内存读操作
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的读操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchMemRead  ${startaddress}  ${endaddress}  ${memType}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视内存写操作
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的写操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchMemWrite  ${startaddress}  ${endaddress}  ${memType}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视内存读写操作
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的读写操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchMemReadWrite  ${startaddress}  ${endaddress}  ${memType}  ${overtime}    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视内存读写操作C
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的读写操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchMemReadWrite  ${startaddress}  ${endaddress}  ${memType}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视内存读操作C
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的读操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchMemRead  ${startaddress}  ${endaddress}  ${memType}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+监视内存写操作C
+    [Documentation]    第${time}秒，监视从${startaddress}到${endaddress}内存段的写操作
+    [Arguments]    ${time}    ${startaddress}    ${endaddress}    ${memType}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchMemWrite  ${startaddress}  ${endaddress}  ${memType}  ${overtime}
+    
+    ${curtime}  VTest_GetCurrentTime    
+    [Return]    ${curtime}
+

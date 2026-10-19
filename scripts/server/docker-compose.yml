@@ -1,0 +1,109 @@
+# Matrix Agent — Docker Compose (full containerized deployment)
+#
+# Usage:
+#   cp .env.example .env   # edit .env with your LLM config
+#   docker compose up -d
+#
+# Architecture:
+#   nginx   — reverse proxy (port 80)
+#   samba   — file sharing (port 445)
+#   opencode-schema-mirror — optional: DNS alias "opencode.ai" serves https://opencode.ai/config.json (offline)
+#   manager — project manager API, creates opencode containers via Docker API
+
+networks:
+  matrix-net:
+    name: ${COMPOSE_PROJECT_NAME:-matrix}_matrix-net
+
+volumes:
+  matrix-projects:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${MATRIX_DATA_DIR:-/data/matrix-projects}"
+  matrix-tools:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${MATRIX_TOOLS_DIR:-/data/matrix-tools}"
+  matrix-nginx-conf:
+  matrix-run:
+
+services:
+  opencode-schema-mirror:
+    build:
+      context: ./schema-mirror
+      dockerfile: Dockerfile
+    image: matrix-opencode-schema-mirror:${MATRIX_VERSION:-latest}
+    container_name: matrix-opencode-schema-mirror
+    restart: unless-stopped
+    volumes:
+      - ${OPENCODE_SCHEMA_HOST_PATH:-./opencode-config/config.json}:/usr/share/nginx/html/config.json:ro
+    networks:
+      matrix-net:
+        aliases:
+          - opencode.ai
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: matrix-nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_PORT:-80}:80"
+      - "${INSTANCE_PORT_RANGE:-5101-5200}:5101-5200"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - matrix-nginx-conf:/etc/nginx/conf.d/matrix.d:ro
+    networks:
+      - matrix-net
+    depends_on:
+      - manager
+
+  samba:
+    build:
+      context: .
+      dockerfile: Dockerfile.samba
+    image: matrix-samba:${MATRIX_VERSION:-latest}
+    container_name: matrix-samba
+    restart: unless-stopped
+    ports:
+      - "${SAMBA_PORT:-445}:445"
+    volumes:
+      - matrix-projects:/data/matrix-projects
+    networks:
+      - matrix-net
+
+  manager:
+    image: matrix-agent:${MATRIX_VERSION:-latest}
+    container_name: matrix-manager
+    restart: unless-stopped
+    depends_on:
+      - opencode-schema-mirror
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - matrix-projects:/data/matrix-projects
+      - matrix-tools:/opt/matrix/tools:ro
+      - matrix-nginx-conf:/opt/matrix/nginx.d
+      - matrix-run:/opt/matrix/run
+    environment:
+      MATRIX_DATA_DIR: /data/matrix-projects
+      MATRIX_TOOLS_DIR: /opt/matrix/tools
+      NGINX_CONF_DIR: /opt/matrix/nginx.d
+      MATRIX_RUN_DIR: /opt/matrix/run
+      MATRIX_DEPLOY_MODE: docker
+      MATRIX_IMAGE: "matrix-agent:${MATRIX_VERSION:-latest}"
+      MATRIX_NETWORK: "${COMPOSE_PROJECT_NAME:-matrix}_matrix-net"
+      MATRIX_VOLUME: "${COMPOSE_PROJECT_NAME:-matrix}_matrix-projects"
+      MATRIX_VOLUME_TOOLS: "${COMPOSE_PROJECT_NAME:-matrix}_matrix-tools"
+      MATRIX_OPENCODE_SCHEMA_MIRROR: "${MATRIX_OPENCODE_SCHEMA_MIRROR:-0}"
+      MATRIX_OPENCODE_SCHEMA_INSECURE_TLS: "${MATRIX_OPENCODE_SCHEMA_INSECURE_TLS:-1}"
+      MATRIX_PORTAL_PUBLIC_URL: "${MATRIX_PORTAL_PUBLIC_URL:-}"
+      MATRIX_OPENCODE_OFFLINE: "${MATRIX_OPENCODE_OFFLINE:-}"
+      LLM_BASE_URL: "${LLM_BASE_URL}"
+      LLM_PUBLIC_URL: "${LLM_PUBLIC_URL:-}"
+      LLM_BASE_URL_OPENCODE: "${LLM_BASE_URL_OPENCODE:-}"
+      LLM_MODEL: "${LLM_MODEL}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+    networks:
+      - matrix-net

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Rebot 7.0.1 (Python 3.11.5 on win32)" generated="2025-10-27T16:57:42.514585" rpa="false" schemaversion="5">
+<suite id="s1" name="TestPara" source="D:\TestPrj\robotFramework\TestPara">
+<suite id="s1-s1" name="功能测试" source="D:\TestPrj\robotFramework\TestPara\功能测试.robot">
+<kw name="启动SunwiseVTest" type="SETUP">
+<msg time="2025-10-27T16:57:42.197241" level="FAIL">No keyword with name '启动SunwiseVTest' found.</msg>
+<arg>pindemo1\\pindemo.vte</arg>
+<status status="FAIL" start="2025-10-27T16:57:42.197241" elapsed="0.000000">No keyword with name '启动SunwiseVTest' found.</status>
+</kw>
+<test id="s1-s1-t1" name="测试用例1" line="19">
+<doc>用例名称:测试用例&lt;&gt;用例代号:测试用例&lt;&gt;测试目的:&lt;&gt;覆盖测试需求项:&lt;&gt;测试类型:&lt;&gt;前提和约束:&lt;&gt;初始设置:&lt;&gt;测试输入:&lt;&gt;章节号:&lt;&gt;测试人员:t&lt;&gt;设计人员:d</doc>
+<status status="FAIL" start="2025-10-27T16:57:42.197241" elapsed="0.000000">Parent suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+
+Also parent suite teardown failed:
+No keyword with name '关闭SunwiseVTest' found.</status>
+</test>
+<test id="s1-s1-t2" name="测试用例2" line="49">
+<doc>用例名称:测试用例&lt;&gt;用例代号:测试用例&lt;&gt;测试目的:&lt;&gt;覆盖测试需求项:&lt;&gt;测试类型:&lt;&gt;前提和约束:&lt;&gt;初始设置:&lt;&gt;测试输入:&lt;&gt;章节号:&lt;&gt;测试人员:t&lt;&gt;设计人员:d
+#用例名称:testcase2
+#用例代号:测试用例1
+#测试类型:值3
+#章节号:值1
+#前提和约束:值2
+#测试输入:值3
+#用例目的:值1
+#测试人员:值2
+#设计人员:值3
+#用例性质:值1
+#测试需求:值1;值2;值3
+#初始设置:值3</doc>
+<status status="FAIL" start="2025-10-27T16:57:42.208507" elapsed="0.015654">Parent suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+
+Also parent suite teardown failed:
+No keyword with name '关闭SunwiseVTest' found.</status>
+</test>
+<kw name="关闭SunwiseVTest" type="TEARDOWN">
+<msg time="2025-10-27T16:57:42.224161" level="FAIL">No keyword with name '关闭SunwiseVTest' found.</msg>
+<arg>pindemo1\\pindemo.vte</arg>
+<status status="FAIL" start="2025-10-27T16:57:42.224161" elapsed="0.000000">No keyword with name '关闭SunwiseVTest' found.</status>
+</kw>
+<status status="FAIL" start="2025-10-27T16:57:42.170000" elapsed="0.053749">Suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+
+Also suite teardown failed:
+No keyword with name '关闭SunwiseVTest' found.</status>
+</suite>
+<doc>[https://pabot.org/?ref=log|Pabot] result from 1 executions.</doc>
+<status status="FAIL" start="2025-10-27T16:57:42.154000" elapsed="0.069374"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="2" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="2" skip="0" id="s1" name="TestPara">TestPara</stat>
+<stat pass="0" fail="2" skip="0" id="s1-s1" name="功能测试">TestPara.功能测试</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-10-27T16:57:42.170412" level="ERROR">Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 6: Library 'Lib\site-packages\robot\libraries\VTestLibrary.py' does not exist.</msg>
+<msg time="2025-10-27T16:57:42.186200" level="ERROR">Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 8: Library 'Lib\site-packages\robot\libraries\AsyncLibrary.py' does not exist.</msg>
+<msg time="2025-10-27T16:57:42.186200" level="ERROR">Error in file 'D:\TestPrj\robotFramework\TestPara\功能测试.robot' on line 9: Resource file '组合关键字\VTest.txt' does not exist.</msg>
+</errors>
+</robot>

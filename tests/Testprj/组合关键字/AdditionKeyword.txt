@@ -1,0 +1,14 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+描述
+    [Documentation]    填写补充步骤以及预期等报告表述项
+    [Arguments]
+    Log  OK    
+    [Return]
+

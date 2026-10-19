@@ -1,0 +1,4 @@
+interface:
+  display_name: "初始化功能需求"
+  short_description: "生成 4.1.1 初始化功能内容。"
+  default_prompt: "使用 $functional-init-requirements 生成 4.1.1 初始化功能需求正文和初始化说明表。"

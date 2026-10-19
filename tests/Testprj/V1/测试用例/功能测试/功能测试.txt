@@ -1,0 +1,17 @@
+*** Settings ***
+Test Setup        启动VTEST  pindemo\\pindemo.vte
+Test Teardown        测试结束  0
+Resource    组合关键字\\VTest.txt
+Resource    组合关键字\\DataPool.txt
+
+*** Variables ***
+
+
+*** Test Cases ***
+测试用例
+    [Setup]        启动VTEST  pindemo\\pindemo.vte
+    VTest运行至绝对时间  20
+    ${Retval}  判读数据池项相等  30  温度  100
+    [Teardown]        测试结束  0
+
+

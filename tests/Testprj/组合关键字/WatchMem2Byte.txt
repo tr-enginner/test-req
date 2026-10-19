@@ -1,0 +1,169 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+监视2Byte读相等
+    [Documentation]    在${time}秒，监视地址${addr} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordReadEqual  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读不等
+    [Documentation]    在${time}秒，监视地址${addr} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordReadUnequal  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读区间
+    [Documentation]    在${time}秒，监视地址${lower} < ${addr} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordReadScope  ${addr}  ${lower}  ${upper}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读大于
+    [Documentation]    在${time}秒，监视地址${addr} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordReadGreater  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读小于
+    [Documentation]    在${time}秒，监视地址${addr} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordReadLess  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写相等
+    [Documentation]    在${time}秒，监视地址${addr} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordWriteEqual  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写不等
+    [Documentation]    在${time}秒，监视地址${addr} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordWriteUnequal  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写区间
+    [Documentation]    在${time}秒，监视地址${lower} < ${addr} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordWriteScope  ${addr}  ${lower}  ${upper}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写大于
+    [Documentation]    在${time}秒，监视地址${addr} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordWriteGreater  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写小于
+    [Documentation]    在${time}秒，监视地址${addr} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    VTest_WatchWordWriteLess  ${addr}  ${expect}  ${memtype}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读相等C
+    [Documentation]    在${time}秒，监视地址${addr} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordReadEqual  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读不等C
+    [Documentation]    在${time}秒，监视地址${addr} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordReadUnequal  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读区间C
+    [Documentation]    在${time}秒，监视地址${lower} < ${addr} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordReadScope  ${addr}  ${lower}  ${upper}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读大于C
+    [Documentation]    在${time}秒，监视地址${addr} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordReadGreater  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte读小于C
+    [Documentation]    在${time}秒，监视地址${addr} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordReadLess  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写相等C
+    [Documentation]    在${time}秒，监视地址${addr} = ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordWriteEqual  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写不等C
+    [Documentation]    在${time}秒，监视地址${addr} ！= ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordWriteUnequal  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写区间C
+    [Documentation]    在${time}秒，监视地址${lower} < ${addr} < ${upper}
+    [Arguments]    ${time}    ${addr}    ${lower}    ${upper}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordWriteScope  ${addr}  ${lower}  ${upper}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写大于C
+    [Documentation]    在${time}秒，监视地址${addr} > ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordWriteGreater  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+监视2Byte写小于C
+    [Documentation]    在${time}秒，监视地址${addr} < ${expect}
+    [Arguments]    ${time}    ${addr}    ${expect}    ${memtype}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${ret}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchWordWriteLess  ${addr}  ${expect}  ${memtype}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+

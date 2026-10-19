@@ -1,0 +1,4 @@
+interface:
+  display_name: "功能测试标题树"
+  short_description: "生成 4.1 功能测试标题树。"
+  default_prompt: "使用 $functional-title-tree 将源功能需求目录映射为 4.1 功能测试标题树。"

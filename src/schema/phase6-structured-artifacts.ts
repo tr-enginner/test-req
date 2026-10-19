@@ -1,0 +1,156 @@
+import { z } from "zod"
+
+export const Phase6GenerationItem = z.object({
+  requirement_id: z.string().optional(),
+  category_key: z.string().optional(),
+  requirement_type: z.string().optional(),
+  requirement_priority: z.string().optional(),
+  test_type_chinese: z.string().optional(),
+  template_key: z.string().optional(),
+  template_file: z.string().nullable().optional(),
+  template_source: z.enum(["markdown", "legacy", "builtin"]).optional(),
+  template_hash: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+  template_index_file: z.string().nullable().optional(),
+  template_domain: z.string().optional(),
+  template_selection_reason: z.string().optional(),
+  source_requirement_ids: z.array(z.string()).optional(),
+  path: z.string().optional(),
+  prompt: z.string().optional(),
+  worker_prompt_file: z.string().optional(),
+  generation_status: z.enum(["ready", "context_required"]).optional(),
+  context_gaps: z.array(z.string()).optional(),
+  normalization_context_json: z.string().optional(),
+  input_dataset_ref: z.string().optional(),
+  input_dataset_file: z.string().optional(),
+  input_dataset_id: z.string().optional(),
+  requirementContext: z.string().optional(),
+  chapter_title: z.string().optional(),
+  protocol_semantic_file: z.string().optional(),
+  protocol_summary_file: z.string().optional(),
+  keyword_candidates: z.array(z.unknown()).optional(),
+}).passthrough()
+export type Phase6GenerationItem = z.infer<typeof Phase6GenerationItem>
+
+export const Phase6GenerationManifest = z.object({
+  status: z.string().optional(),
+  template_provenance_version: z.literal(1).optional(),
+  domain: z.string().optional(),
+  template_source: z.string().optional(),
+  template_usage: z.array(z.object({
+    template_file: z.string().nullable(),
+    requirement_count: z.number().int().nonnegative(),
+  })).optional(),
+  input_format: z.string().optional(),
+  test_requirements_file: z.string().optional(),
+  artifact_meta: z.record(z.string(), z.unknown()).optional(),
+  suite_meta: z.record(z.string(), z.unknown()).optional(),
+  project_type: z.string().optional(),
+  total: z.number().optional(),
+  items: z.array(Phase6GenerationItem).default([]),
+  warnings: z.array(z.string()).optional(),
+}).passthrough()
+export type Phase6GenerationManifest = z.infer<typeof Phase6GenerationManifest>
+
+export const Phase6RunSnapshot = z.object({
+  run_id: z.string(),
+  started_at: z.string().optional(),
+  updated_at: z.string().optional(),
+  generation_manifest_file: z.string().optional(),
+  run_dir: z.string().optional(),
+  status_file: z.string().optional(),
+  events_file: z.string().optional(),
+  latest_run_file: z.string().optional(),
+  result_summary_file: z.string().optional(),
+  concurrency_limit: z.number().optional(),
+  peak_in_flight: z.number().optional(),
+  total: z.number().optional(),
+  pending: z.number().optional(),
+  running: z.number().optional(),
+  succeeded: z.number().optional(),
+  failed: z.number().optional(),
+  launched_total: z.number().optional(),
+  running_requirement_ids: z.array(z.string()).optional(),
+  completed_requirement_ids: z.array(z.string()).optional(),
+  failed_requirement_ids: z.array(z.string()).optional(),
+}).passthrough()
+export type Phase6RunSnapshot = z.infer<typeof Phase6RunSnapshot>
+
+export const Phase6RunEvent = z.object({
+  ts: z.string().optional(),
+  run_id: z.string().optional(),
+  event: z.string(),
+  requirement_id: z.string().optional(),
+  replacement_requirement_id: z.string().optional(),
+  attempt: z.number().optional(),
+  message: z.string().optional(),
+}).passthrough()
+export type Phase6RunEvent = z.infer<typeof Phase6RunEvent>
+
+export const Phase6WorkerDiagnostic = z.object({
+  requirement_id: z.string(),
+  session_id: z.string().optional(),
+  prompt_file: z.string().optional(),
+  launched_at: z.string().optional(),
+  finished_at: z.string().optional(),
+  attempts: z.number().optional(),
+  status: z.string().optional(),
+  validation_errors: z.array(z.string()).default([]),
+  warnings: z.array(z.string()).default([]),
+  attempts_detail: z.array(z.record(z.string(), z.unknown())).default([]),
+}).passthrough()
+export type Phase6WorkerDiagnostic = z.infer<typeof Phase6WorkerDiagnostic>
+
+export const Phase6WorkerResultRequirement = z.object({
+  source_index: z.number().optional(),
+  requirement_id: z.string(),
+  status: z.string(),
+  attempts: z.number().optional(),
+  case_count: z.number().optional(),
+  diagnostic_file: z.string().optional(),
+  prompt_file: z.string().optional(),
+  source_requirement_ids: z.array(z.string()).optional(),
+  path: z.string().optional(),
+  input_dataset_ref: z.string().optional(),
+  errors: z.array(z.string()).optional(),
+  warnings_count: z.number().optional(),
+}).passthrough()
+export type Phase6WorkerResultRequirement = z.infer<typeof Phase6WorkerResultRequirement>
+
+export const Phase6WorkerResultSummary = z.object({
+  status: z.string(),
+  run_id: z.string(),
+  run_dir: z.string().optional(),
+  status_file: z.string().optional(),
+  events_file: z.string().optional(),
+  latest_run_file: z.string().optional(),
+  result_summary_file: z.string().optional(),
+  generation_manifest_file: z.string().optional(),
+  suite_file: z.string().optional(),
+  source_suite_file: z.string().optional(),
+  translated_suite_file: z.string().optional(),
+  translation_report_file: z.string().optional(),
+  translation_cases_dir: z.string().optional(),
+  translation_failures_file: z.string().optional(),
+  translation_status: z.string().optional(),
+  partial_translated_suite_file: z.string().optional(),
+  translation_summary: z.record(z.string(), z.unknown()).optional(),
+  translation_failed_locations: z.array(z.string()).optional(),
+  todo_file: z.string().optional(),
+  todo_case_count: z.number().optional(),
+  suite_meta: z.record(z.string(), z.unknown()).optional(),
+  artifact_meta: z.record(z.string(), z.unknown()).optional(),
+  project_type: z.string().optional(),
+  concurrency_limit: z.number().optional(),
+  peak_in_flight: z.number().optional(),
+  launched_total: z.number().optional(),
+  total: z.number().optional(),
+  succeeded: z.number().optional(),
+  failed: z.number().optional(),
+  persisted_case_count: z.number().optional(),
+  persisted_requirement_count: z.number().optional(),
+  failed_requirements: z.array(z.record(z.string(), z.unknown())).default([]),
+  requirements: z.array(Phase6WorkerResultRequirement).default([]),
+  warnings: z.array(z.string()).optional(),
+  persistence_error: z.string().optional(),
+}).passthrough()
+export type Phase6WorkerResultSummary = z.infer<typeof Phase6WorkerResultSummary>

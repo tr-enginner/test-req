@@ -1,0 +1,69 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\VTestLibrary.py
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+
+*** Variables ***
+
+
+*** Keywords ***
+设置PC值
+    [Documentation]    第${time}秒，设置PC值为${value}
+    [Arguments]    ${time}    ${value}
+    VTest_WaitToTime  ${time}    
+    VTest_SetPC  ${value}    
+    [Return]
+获取PC值
+    [Documentation]    第${time}秒，获取PC值
+    [Arguments]    ${time}
+    VTest_WaitToTime  ${time}    
+    ${result}  VTest_GetPC    
+    [Return]    ${result}
+监视PC值
+    [Documentation]    第${result0}秒，开始监视程序运行直到PC=${PCValue}
+    [Arguments]    ${time}    ${PCValue}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_WatchPcToAddr  ${PCValue}  ${overtime}    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+CPU复位
+    [Documentation]    第${time}秒CPU复位
+    [Arguments]    ${time}    ${strParam}
+    VTest_WaitToTime  ${time}    
+    VTest_ResetCPU  ${strParam}    
+    [Return]
+获取寄存器值
+    [Documentation]    第${time}秒，获取掩码为${mask}，获取寄存器地址${address}的值
+    [Arguments]    ${time}    ${address}    ${mask}
+    VTest_WaitToTime  ${time}    
+    ${result0}  VTest_GetRegVal  ${address}  ${mask}    
+    [Return]    ${result0}
+设置寄存器值
+    [Documentation]    第${time}秒，设置掩码为${mask}，寄存器地址${address}的值为${data}
+    [Arguments]    ${time}    ${address}    ${data}    ${mask}
+    VTest_WaitToTime  ${time}    
+    VTest_SetRegVal  ${address}  ${data}  ${mask}    
+    [Return]
+判读寄存器
+    [Documentation]    第${Time}秒时刻，寄存器${RegId}的值为${Value}<=>第${Time}秒时刻，寄存器${RegId}的值为@${result0}
+    [Arguments]    ${Time}    ${RegId}    ${Value}    ${Mask}
+    ${result0}  获取寄存器值  ${Time}  ${RegId}  ${Mask}    
+    Should_Be_Equal_As_Integers  ${Value}  ${result0}    
+    [Return]
+监视PC值C
+    [Documentation]    第${result0}秒，开始监视程序运行直到PC=${PCValue}
+    [Arguments]    ${time}    ${PCValue}    ${overtime}
+    VTest_WaitToTime  ${time}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  VTest_WatchPcToAddr  ${PCValue}  ${overtime}
+    
+    ${result0}  VTest_GetCurrentTime    
+    [Return]    ${result0}
+判读寄存器C
+    [Documentation]    第${Time}秒时刻，寄存器${RegId}的值为${Value}<=>第${Time}秒时刻，寄存器${RegId}的值为@${result0}
+    [Arguments]    ${Time}    ${RegId}    ${Value}    ${Mask}
+    ${result0}  获取寄存器值  ${Time}  ${RegId}  ${Mask}    
+    ${result0}  Run_Keyword_And_Continue_On_Failure
+    ...  Should_Be_Equal_As_Integers  ${Value}  ${result0}
+    
+    [Return]
+

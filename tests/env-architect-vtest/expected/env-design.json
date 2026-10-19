@@ -1,0 +1,240 @@
+{
+  "project_name": "卫星电源控制单元 (PCU)",
+  "version": "1.0.0",
+  "created_date": "2026-03-09T00:00:00.000Z",
+  "environment_type": "SIL",
+
+  "platforms": [
+    {
+      "id": "PLAT-001",
+      "name": "VTest 目标机仿真平台",
+      "type": "host",
+      "os": "Windows x86",
+      "processor": "ARM Cortex-M4 (VTest QEMU仿真)",
+      "components": [
+        {
+          "name": "VTest 仿真引擎",
+          "type": "software",
+          "version": "3.x",
+          "description": "QEMU 内核 ARM 仿真器，加载 PCU 固件 ELF/HEX 运行"
+        },
+        {
+          "name": "vdev_adc.dll",
+          "type": "software",
+          "description": "ADC 虚拟外设设备 DLL — 仿真 6 通道 12bit ADC 采样，通过 VPort 注入模拟量数据"
+        },
+        {
+          "name": "vdev_uart.dll",
+          "type": "software",
+          "description": "UART 虚拟外设设备 DLL — 仿真 USART1 收发，支持遥测帧捕获和遥控帧注入"
+        },
+        {
+          "name": "vdev_gpio.dll",
+          "type": "software",
+          "description": "GPIO 虚拟外设设备 DLL — 仿真离散量 I/O，监控继电器/负载开关输出，注入过流/过温输入"
+        },
+        {
+          "name": "vdev_pwm_capture.dll",
+          "type": "software",
+          "description": "PWM 捕获虚拟设备 DLL — 捕获 TIM1/TIM2 PWM 输出占空比用于验证 MPPT/充电控制"
+        },
+        {
+          "name": "vdev_test_driver.dll",
+          "type": "software",
+          "description": "测试驱动虚拟设备 DLL — 加载测试脚本，按时间序列注入激励并采集响应"
+        }
+      ],
+      "description": "基于 VTest 目标机仿真器的软件在环 (SIL) 测试平台，通过虚拟外设 DLL 仿真 PCU 所有硬件接口"
+    }
+  ],
+
+  "tools": [
+    {
+      "name": "VTest",
+      "version": "3.x",
+      "purpose": "ARM Cortex-M4 目标机仿真执行引擎",
+      "qualification_status": "项目级验证"
+    },
+    {
+      "name": "arm-none-eabi-gcc",
+      "version": "12.x",
+      "purpose": "交叉编译 PCU 固件为 ELF 格式",
+      "qualification_status": "工具链验证"
+    },
+    {
+      "name": "MSVC",
+      "version": "18.0+",
+      "purpose": "编译虚拟设备 DLL (Windows 32-bit DLL)",
+      "qualification_status": "N/A (测试工具)"
+    }
+  ],
+
+  "simulation_models": [
+    {
+      "name": "ADC 传感器仿真模型",
+      "simulated_component": "6 通道 ADC (IF-001)",
+      "fidelity": "high",
+      "description": "通过 VPort 映射 6 个 ADC 通道数据寄存器，支持以下仿真模式:\n- 静态值注入: 测试脚本设定固定 ADC 值\n- 动态曲线: 按时间序列播放预录传感器数据\n- 噪声叠加: 在标称值上叠加高斯噪声\n- 故障注入: 传感器卡死、满量程、零值"
+    },
+    {
+      "name": "UART 通信仿真模型",
+      "simulated_component": "USART1 遥测遥控 (IF-003)",
+      "fidelity": "high",
+      "description": "通过 VPort 映射 UART TX/RX 数据寄存器:\n- TX 捕获: 记录 PCU 发出的遥测帧，校验 CRC 和帧格式\n- RX 注入: 按测试脚本时序发送遥控帧\n- 误码注入: 模拟通信错误（CRC 错误、帧不完整）"
+    },
+    {
+      "name": "GPIO 离散量仿真模型",
+      "simulated_component": "GPIO 输出/输入 (IF-004)",
+      "fidelity": "medium",
+      "description": "通过 Pin 连接映射 GPIO 引脚:\n- 输出监控: 监控 solar_relay、load_sw1/2/3、status_led 状态变化\n- 输入注入: 模拟 overcurrent 和 overtemp 检测信号\n- 事件记录: 记录每次 GPIO 状态变化的仿真时间戳"
+    },
+    {
+      "name": "PWM 输出捕获模型",
+      "simulated_component": "TIM1/TIM2 PWM 输出 (IF-002)",
+      "fidelity": "medium",
+      "description": "通过内存监视捕获 TIM 比较寄存器写入:\n- 占空比计算: 从 CCR/ARR 寄存器值计算实际占空比\n- 变化记录: 记录 PWM 占空比随时间的变化曲线\n- 频率验证: 确认 PWM 频率为 20kHz (MPPT) / 50kHz (充电)"
+    }
+  ],
+
+  "environment_difference_analysis": "VTest SIL 仿真环境与真实硬件的主要差异:\n1. 时序精度: VTest 仿真时钟步进式执行，无实时约束，200μs 保护响应需通过指令周期计数验证\n2. ADC 采样: 真实 ADC 有量化噪声和温漂，仿真模型通过噪声叠加近似\n3. PWM 输出: 仿真环境中 PWM 为寄存器级仿真，无实际功率驱动\n4. 中断时序: VTest 中断处理为串行执行，不模拟硬件中断优先级仲裁延迟\n5. UART 物理层: 仿真环境不模拟波特率同步和电平翻转，仅模拟字节级收发",
+
+  "baseline_status": "待验证",
+
+  "baseline_tests": [
+    {
+      "id": "BL-001",
+      "name": "固件加载与初始化验证",
+      "description": "加载 PCU ELF 固件到 VTest，验证 PCU_Init 正确执行: GPIO 状态灯点亮、ADC 启动、UART 就绪",
+      "expected_result": "PASS",
+      "verification_method": "监控 GPIO_STATUS_LED 引脚在 500ms 内变为高电平",
+      "related_requirements": ["SRS-001"]
+    },
+    {
+      "id": "BL-002",
+      "name": "ADC 数据通路验证",
+      "description": "通过 VPort 写入已知 ADC 值，读取 PCU 内存中的转换结果，验证 ADC_TO_VOLTAGE 宏正确",
+      "expected_result": "PASS",
+      "verification_method": "注入 ADC raw=2048 → 验证 solar_voltage ≈ 25.0V (50V * 2048/4095)",
+      "related_requirements": ["SRS-002", "SRS-004"]
+    },
+    {
+      "id": "BL-003",
+      "name": "UART 回环验证",
+      "description": "发送遥控帧到 PCU，验证 PCU 回复确认帧，确认 UART 双向通信链路正常",
+      "expected_result": "PASS",
+      "verification_method": "发送模式查询指令，检查回复帧中的当前模式字段",
+      "related_requirements": ["SRS-007", "SRS-008"]
+    },
+    {
+      "id": "BL-004",
+      "name": "GPIO 输出驱动验证",
+      "description": "监控所有 GPIO 输出引脚，验证初始化后的状态: solar_relay=0, load_sw=0, led=1",
+      "expected_result": "PASS",
+      "verification_method": "VTest Pin 监控 + SetWatchOnMemory 回调验证",
+      "related_requirements": ["SRS-001"]
+    },
+    {
+      "id": "BL-005",
+      "name": "PWM 输出验证",
+      "description": "进入正常模式后验证 MPPT PWM 和充电 PWM 输出频率和初始占空比",
+      "expected_result": "PASS",
+      "verification_method": "监控 TIM1_CCR1 和 TIM2_CCR1 寄存器写入，计算占空比",
+      "related_requirements": ["SRS-002", "SRS-003"]
+    },
+    {
+      "id": "BL-006",
+      "name": "过压保护响应验证",
+      "description": "注入母线电压 31V (ADC raw=3631)，验证 solar_relay 在 200μs 内断开",
+      "expected_result": "PASS",
+      "verification_method": "SetWatchOnMemory 监控 bus_voltage 变量 + 计数 solar_relay 变化时的 CPU 周期",
+      "related_requirements": ["SRS-005"]
+    },
+    {
+      "id": "BL-007",
+      "name": "仿真环境稳定性验证",
+      "description": "连续运行 10 秒仿真时间，确认无崩溃、死锁或异常退出",
+      "expected_result": "PASS",
+      "verification_method": "VTest 运行 10s 仿真时间后正常退出",
+      "related_requirements": []
+    }
+  ],
+
+  "stimulus_profiles": [
+    {
+      "id": "STIM-NOMINAL",
+      "name": "标称工况",
+      "description": "太阳能阵列正常输出，蓄电池半满，负载稳定",
+      "parameters": {
+        "solar_voltage": 35.0,
+        "solar_current": 5.0,
+        "battery_voltage": 26.0,
+        "battery_current": 2.0,
+        "bus_voltage": 28.0,
+        "temperature": 25.0
+      }
+    },
+    {
+      "id": "STIM-OVERVOLTAGE",
+      "name": "母线过压",
+      "description": "模拟负载突降导致母线电压升高",
+      "parameters": {
+        "solar_voltage": 42.0,
+        "solar_current": 8.0,
+        "battery_voltage": 28.5,
+        "battery_current": -1.0,
+        "bus_voltage": 31.0,
+        "temperature": 30.0
+      }
+    },
+    {
+      "id": "STIM-UNDERVOLTAGE",
+      "name": "蓄电池欠压",
+      "description": "日蚀期间蓄电池电量耗尽",
+      "parameters": {
+        "solar_voltage": 0.0,
+        "solar_current": 0.0,
+        "battery_voltage": 21.5,
+        "battery_current": -3.0,
+        "bus_voltage": 21.5,
+        "temperature": 10.0
+      }
+    },
+    {
+      "id": "STIM-OVERCURRENT",
+      "name": "太阳能阵列过流",
+      "description": "太阳能阵列短路故障",
+      "parameters": {
+        "solar_voltage": 5.0,
+        "solar_current": 10.0,
+        "overcurrent_detect": 1
+      }
+    },
+    {
+      "id": "STIM-HIGH-TEMP",
+      "name": "高温环境",
+      "description": "蓄电池过温告警",
+      "parameters": {
+        "temperature": 80.0,
+        "overtemp_detect": 1
+      }
+    }
+  ],
+
+  "configuration": {
+    "vtest_project_file": "pcu_sim.vte",
+    "firmware_image": "build/pcu_firmware.elf",
+    "simulation_duration_s": 30,
+    "timing": {
+      "cpu_frequency_hz": 168000000,
+      "systick_period_ms": 1,
+      "adc_sample_rate_hz": 1000,
+      "mppt_update_period_ms": 100,
+      "telemetry_period_ms": 1000
+    },
+    "coverage": {
+      "enabled": true,
+      "output_file": "coverage/pcu_coverage.cox",
+      "type": "branch"
+    }
+  }
+}

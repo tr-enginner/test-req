@@ -1,0 +1,20 @@
+*** Settings ***
+Library    Lib\\site-packages\\robot\\libraries\\BuiltIn.py
+Library    Lib\\site-packages\\robot\\libraries\\Dialogs.py
+
+*** Variables ***
+
+
+*** Keywords ***
+人工判读结果
+    [Documentation]    查看${tips} <=>[${error}]
+    [Arguments]    ${tips}    ${error}
+    ${return0}  Run_Keyword_And_Continue_On_Failure
+    ...  execute_manual_step  ${tips}  ${error}
+    
+    [Return]
+人工输入数据
+    [Arguments]    ${tips}
+    ${result0}  get_value_from_user  ${tips}    
+    [Return]    ${result0}
+

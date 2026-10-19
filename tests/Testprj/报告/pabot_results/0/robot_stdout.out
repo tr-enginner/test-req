@@ -1,0 +1,40 @@
+==============================================================================
+TestPara                                                                      
+==============================================================================
+TestPara.功能测试                                                             
+==============================================================================
+  
+  Traceback (most recent call last):
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  D:\TestPrj\robotFramework\TestPara\功能测试.robot:2
+      启动SunwiseVTest    pindemo1\\pindemo.vte
+      |  pindemo1\\pindemo.vte = pindemo1\pindemo.vte (str)
+______________________________________________________________________________
+测试用例1 :: 用例名称:测试用例<>用例代号:测试用例<>测试目的:<>覆盖... | FAIL |
+Parent suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+------------------------------------------------------------------------------
+测试用例2 :: 用例名称:测试用例<>用例代号:测试用例<>测试目的:<>覆盖... | FAIL |
+Parent suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+------------------------------------------------------------------------------
+  
+  Traceback (most recent call last):
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    File  D:\TestPrj\robotFramework\TestPara\功能测试.robot:3
+      关闭SunwiseVTest    pindemo1\\pindemo.vte
+      |  pindemo1\\pindemo.vte = pindemo1\pindemo.vte (str)
+______________________________________________________________________________
+TestPara.功能测试                                                     | FAIL |
+Suite setup failed:
+No keyword with name '启动SunwiseVTest' found.
+
+Also suite teardown failed:
+No keyword with name '关闭SunwiseVTest' found.
+
+2 tests, 0 passed, 2 failed
+==============================================================================
+TestPara                                                              | FAIL |
+2 tests, 0 passed, 2 failed
+==============================================================================
+Output:  C:\Users\hp\Desktop\Testprj\报告\pabot_results\0\output.xml

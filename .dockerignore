@@ -1,0 +1,13 @@
+# Reduce Docker build context — only src/, package.json, bun.lock,
+# tsconfig.json, skills/, templates/, standards/, bin/, node_modules/,
+# tools-archive/, and scripts/server/ are needed.
+.git
+.pack-staging
+release
+tests
+docs
+*.md
+.claude
+.matrix
+joern
+tools-archive/tools

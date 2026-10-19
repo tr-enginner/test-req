@@ -1,0 +1,4 @@
+interface:
+  display_name: "性能测试需求"
+  short_description: "从功能需求全文提取并分类生成4.2性能测试需求内容"
+  default_prompt: "使用 $performance-test-requirements 从指定功能需求文本生成4.2性能测试需求raw JSON。"
